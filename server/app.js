@@ -1,6 +1,5 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
-const cors = require('cors');
 
 // SOCKET.IO
 let http = require('http').Server(app);
@@ -25,7 +24,12 @@ const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohdu
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.use(bodyParser.json({limit: '10mb', extended: true}));
-
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, authorization');
+  res.header('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 
 // Check the request
