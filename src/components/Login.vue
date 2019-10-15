@@ -4,6 +4,9 @@
       <v-card-title class="deep-orange lighten-1" primary-title>Login</v-card-title>
       <v-card-text>
         <v-form>
+          <v-snackbar v-bind:timeout="5000" top v-model="snackbar"> 
+            <div class="text-center"><span>{{resText}}</span></div>
+          </v-snackbar>
           <v-text-field
             v-model="login.email"
             label="Email"
@@ -19,7 +22,6 @@
             prepend-icon="mdi-lock-outline"
             type="password"
           ></v-text-field>
-          <p>Data : {{ login.email}}</p>
         </v-form>
       </v-card-text>
 
@@ -38,6 +40,8 @@
 export default {
   data() {
     return {
+      snackbar: false,
+      resText : "",
       login: {
         email: "",
         pwd: "",
@@ -60,14 +64,15 @@ export default {
   methods: {
     async submit() {
       try {
-        const response = await axios.post("http://localhost:8001/login", {
+        this.snackbar = true;
+        const res = await axios.post("http://localhost:8001/login", {
           email: this.login.email,
           password: this.login.pwd
         });
-        console.log(response);
-        this.dialog = false;
+        this.resText = res.data.message;
+        console.log(res);
       } catch (error) {
-        console.log(error);
+        this.resText = 'Error, please retry';
       }
     }
   }

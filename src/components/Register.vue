@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="show" persistent max-width="600px">
+    <v-dialog v-model="show" max-width="600px">
       <v-card>
         <v-card-title class="deep-orange lighten-1" primary-title>
           <span class="headline">User Profile</span>
