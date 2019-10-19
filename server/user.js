@@ -385,22 +385,73 @@ exports.login = (req, res) => {
   }
 };
 
+const regex = {
+  pwd:  RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$'),
+  mail:  RegExp('^[^\W][A-z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$'),
+  lenght: RegExp('^[A-zÀ-ú- ]{2,20}$'),
+  username: RegExp('[A-zÀ-ú]{2}|^[a-zA-Z0-9-]{3, 20}$'),
+  age: RegExp('^[0-9]{1,3}$'),
+ }
+
+ function getAge(dateString) {
+  var today = new Date();
+  var birthDate = new Date(dateString);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+  }
+  return age;
+}
+
+// function genKey() {
+//   const crypto = require('crypto');
+//   var currentDate = Date.now() + Math.random() * 100000000;
+//   var token = crypto.createHash('sha256');
+  
+//   token.update(currentDate.toString(), 'utf-8')
+//   token = token.digest('hex');
+//   token = token.generate();
+//   return token;
+// }
+
 exports.register = (req, res) => {
+  var token = require('./token');
+  var key = token.generate();
   if (!req.body) {
     res.sendStatus(500);
-  } else {
+  }
+  else if (!regex.lenght.test(req.body.firstname) || !regex.lenght.test(req.body.lastname)) {
+    !regex.lenght.test(req.body.firstname) ? res.json({message: 'firstname', success: false}) : res.json({message: 'lastname', success: false});
+  }
+  else if (req.body.password !== req.body.confirmpwd) {
+    res.json({message: 'confirmPwd', success: false});
+  }
+  else if (!regex.pwd.test(req.body.password)) {
+    res.json({message: 'regexPwd', success: false});
+  }
+  else if (!regex.mail.test(req.body.email)){
+    res.json({message: 'regexMail', success: false});
+  }
+  else if (getAge (req.body.birthdate) < 18 || getAge (req.body.birthdate) > 99) {
+    res.json({message: 'age', success: false});
+  }
+  else if (req.body.gender !== "Male" && req.body.gender !== "Female") {
+    res.json({message: 'gender', success: false});
+  }
+  else {
     if (res) {
       let sql = 'INSERT INTO user VALUES(id_user, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
       // Hash the password
       const hash = passwordHash.generate(req.body.password);
       let query = db.format(sql, [
         req.body.firstname, req.body.lastname, req.body.email, hash, req.body.gender,
-        req.body.birthdate, 'Both', null, 10, 18, 100, req.body.key, false, 100, null, 0, null, 100
+        req.body.birthdate, 'Both', null, 10, 18, 100, key, false, 100, null, 0, null, 100
       ]);
       db.query(query, (err, response) => {
         if (err) { 
           res.json({
-            message: 'This email already exist',
+            message: 'mailTaken',
             success: false,
           });
         } else {
@@ -409,10 +460,10 @@ exports.register = (req, res) => {
           query = db.format(sql, [ userId, userId, userId, userId, userId, userId ]);
           db.query(query, (err) => {
             if (err) { 
-              res.json({ message: 'This email already exist', success: false });
+              res.json({ message: 'mailTaken', success: false });
               throw err;
             } else {
-              res.json({ success: true, message: 'Check your mailbox to confirm your account', user_id: userId });
+              res.json({ success: true, message: 'success', user_id: userId });
             }
           });
         }
@@ -438,6 +489,8 @@ exports.sendMail = (req, res) => {
   }
 }
 exports.resetPassword = (req, res) => {
+  var token = require('./token');
+  var key = token.generate();
   if (!req.body) {
     res.sendStatus(500);
   } else {
@@ -445,7 +498,7 @@ exports.resetPassword = (req, res) => {
       let sql = 'UPDATE user SET validation_key = ? WHERE email = ?';
       let query = db.format(sql,
         [
-          req.body.key,
+          key,
           req.body.email,
         ]);
       db.query(query, (err, response) => {
@@ -455,7 +508,7 @@ exports.resetPassword = (req, res) => {
         } else {
           res.json({ success: true, message: 'Successfully prepared to send password reset email' });
           if (req.body.function === 'sendMail') {
-            nodeMailerResetPasswordCall(req.body.email, req.body.key, info => {
+            nodeMailerResetPasswordCall(req.body.email, key, info => {
               // res.send(info);
             });
           }

@@ -34,14 +34,15 @@ app.use((req, res, next) => {
 
 // Check the request
 const checkUserToken = (req, res, next) => {
-  if (!req.header('authorization')) {
-    return res.status(401).json({
-      success: false,
-      message: 'Missing authentication header'
-    });
-  }
-  const token = req.header('authorization').split(' ')[1];
-  jwt.verify(token, secret);
+  
+  // if (!req.header('authorization')) {
+  //   return res.status(401).json({
+  //     success: false,
+  //     message: 'Missing authentication header'
+  //   });
+  // }
+  // const token = req.header('authorization').split(' ')[1];
+  // jwt.verify(token, secret);
   next();
 };
 
