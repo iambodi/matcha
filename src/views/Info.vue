@@ -46,7 +46,7 @@
               <span>Refresh form</span>
             </v-tooltip>
           </v-slide-x-reverse-transition>
-          <v-btn color="primary" text @click="submit">Submit</v-btn>
+          <v-btn color="primary" text @click="test">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -125,10 +125,16 @@
 export default {
     data () {
       return {
+        test: "",
+        formHasErrors: "", 
+        errorMessages: "",
         show1: false,
         show2: false,
         show3: false,
-        password: 'Password',
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
         rules: {
           required: value => !!value || 'Required.',
           min: v => v.length >= 8 || 'At least 8 letters and digits',
@@ -136,5 +142,16 @@ export default {
         },
       }
     },
+    methods: {
+     async submit() {
+      try {
+        const res = await axios.post("http://localhost:8001/resetPassword", {
+        });
+        console.log(res.data);
+      } catch (error) {
+        this.resText = 'Error, please retry';
+      }
+    }
+  }
 }
 </script>

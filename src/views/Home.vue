@@ -1,13 +1,13 @@
 <template>
   <v-container fluid fill-height justify-center align-center>
-      <v-card v-if="logged" color="rgba(255, 0, 0, 0)" outlined>
+      <v-card v-if="!logged" color="rgba(255, 0, 0, 0)" outlined>
         <v-btn rounded color="error" width="20vw" @click.stop="register=true">Register
         <Register v-model="register" /></v-btn>
         <v-btn rounded color="primary" width="20vw" @click.stop="login=true">Login
         <Login v-model="login" /></v-btn>
       </v-card>
 
-<v-card
+<v-card v-else
     elevation="12"
     width="800"
   >
@@ -69,6 +69,7 @@
       <v-chip-group
         active-class="deep-orange lighten-1 white--text"
         column
+        multiple
       >
       <v-chip
         v-for="(tag, i) in tags" 
@@ -92,9 +93,10 @@ import Login from '../components/Login';
 export default {
   data () {
     return {
+      id: localStorage.getItem('id'),
       register: false,
       login: false,
-      logged: true,
+      logged: false,
       flat: false,
       media: true,
       loading: false,
@@ -106,15 +108,26 @@ export default {
       selected : [],
     }
   },
+  mounted () {
+
+  },
   components: {
     Register,
     Login
+  },
+  computed: {
+    getUser : async function () {
+      try {
+        console.log(this.logged);
+        const res = await axios.get("http://localhost:8001/home/" + this.id, {
+        });
+        if (res.data.success === true) {
+          this.logged = true;
+        }               
+      } catch (error) {
+        this.resText = 'Error, please retry';
+      }
+    },
   }
-  // methods: {
-  //   goTo: function (page) {
-  //     page === "login" ? window.location = "http://localhost:8082/login" : window.location = "http://localhost:8082/register";
-  //   },
-  // }
-
 };
 </script>

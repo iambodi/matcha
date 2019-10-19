@@ -15,9 +15,9 @@ export default new Router({
       component: Home
     },
     {
-      path: '/register',
-      name: 'register',
-      component: Register,
+      path: '/activate',
+      name: 'activate',
+      component: () => import(/* webpackChunkName: "about" */ './views/Activate.vue')
     },
     {
       path: '/about',

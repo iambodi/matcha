@@ -4,8 +4,8 @@
         <v-app-bar flat app>
             <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title class="text-uppercase deep-orange--text">
-                <span class="font-weight-light">MAT</span>
-                <span>Cha</span>
+                <span :style="{ cursor: 'pointer'}" @click="redirect" class="cursos-pointer font-weight-light">MAT</span>
+                <span :style="{ cursor: 'pointer'}" @click="redirect">Cha</span>
             </v-toolbar-title>
                 <v-btn icon @click.stop="notif=true">
                     <v-icon>mdi-bell-outline</v-icon>
@@ -53,8 +53,13 @@ export default {
             ],
         }
     },
-    components : {
+    components: {
         Notif,
+    },
+    methods: {
+        redirect () {
+            window.location = 'http://localhost:8080';
+        }
     }
 }
 </script>

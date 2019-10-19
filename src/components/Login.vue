@@ -29,7 +29,9 @@
 
       <v-card-actions>
         <div class="flex-grow-1"></div>
-        <v-btn color="primary" text @click="submit" v-on:click="dialog = false">Submit</v-btn>
+         <v-btn rounded color="error" width="20vw" @click.stop="ResPwd=true; show=false">Reset password
+         <ResPwd v-model="ResPwd"/></v-btn>
+        <v-btn color="primary" text @click="submit">Submit</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -37,9 +39,14 @@
 
 
 <script>
+import ResPwd from './ResPwd'
+
 export default {
   data() {
     return {
+      // logged: localStorage.getItem('logged'),
+      id: localStorage.getItem('id'),
+      ResPwd: false,
       snackbar: false,
       resText : "",
       login: {
@@ -47,6 +54,9 @@ export default {
         pwd: "",
       }
     };
+  },
+  components: {
+    ResPwd
   },
   props: {
     value: Boolean
@@ -70,7 +80,13 @@ export default {
           password: this.login.pwd
         });
         this.resText = res.data.message;
-        console.log(res);
+        console.log(res.data);
+        if (res.data.success === true){
+          localStorage.setItem('logged', true);
+          localStorage.setItem('token', res.data.token);
+          localStorage.setItem('id', res.data.user_id);          
+          window.location = 'http://localhost:8080'
+        }
       } catch (error) {
         this.resText = 'Error, please retry';
       }
