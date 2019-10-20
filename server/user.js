@@ -403,17 +403,6 @@ const regex = {
   return age;
 }
 
-// function genKey() {
-//   const crypto = require('crypto');
-//   var currentDate = Date.now() + Math.random() * 100000000;
-//   var token = crypto.createHash('sha256');
-  
-//   token.update(currentDate.toString(), 'utf-8')
-//   token = token.digest('hex');
-//   token = token.generate();
-//   return token;
-// }
-
 exports.register = (req, res) => {
   var token = require('./token');
   var key = token.generate();
@@ -463,6 +452,7 @@ exports.register = (req, res) => {
               throw err;
             } else {
               res.json({ success: true, message: 'success', user_id: userId });
+              nodeMailerRegisterCall(req.body.firstname, req.body.email, key, info => {})
             }
           });
         }
@@ -535,8 +525,8 @@ async function nodeMailerRegisterCall(userName, email, key, callback) {
     to: email,
     subject: "Validate your MATCHA account :)",
     html: `<html><h1>Hello ${userName}! Please click the link below to activate your Matcha account: </h1><br> \
-            <a href="http://localhost:8080/activate/${email}/${key}">Validate your account</a></html><br> \
-            Or copy, paste this link : <u>http://localhost:8080/activate/${email}/${key}</u>`,
+            <a href="http://localhost:8080/activate?email=${email}&key=${key}">Validate your account</a></html><br> \
+            Or copy, paste this link : <u>http://localhost:8080/activate?email=${email}&key=${key}</u>`,
   });
 
   callback(info);
