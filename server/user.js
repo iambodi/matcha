@@ -389,7 +389,6 @@ const regex = {
   pwd:  RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$'),
   mail:  RegExp('^[^\W][A-z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$'),
   lenght: RegExp('^[A-zÀ-ú- ]{2,20}$'),
-  username: RegExp('[A-zÀ-ú]{2}|^[a-zA-Z0-9-]{3, 20}$'),
   age: RegExp('^[0-9]{1,3}$'),
  }
 
@@ -502,16 +501,17 @@ exports.resetPassword = (req, res) => {
           req.body.email,
         ]);
       db.query(query, (err, response) => {
-        console.log(err);
         if (err) {
           res.json({ success: false, message: 'Network error' });
-        } else {
-          res.json({ success: true, message: 'Successfully prepared to send password reset email' });
-          if (req.body.function === 'sendMail') {
+        } 
+        else if (!regex.mail.test(req.body.email)) {
+          res.json({message: 'regex', success: false});
+        }
+        else {
+          res.json({ success: true, message: 'success' });
             nodeMailerResetPasswordCall(req.body.email, key, info => {
               // res.send(info);
             });
-          }
         }
       });
     } else {
@@ -535,8 +535,8 @@ async function nodeMailerRegisterCall(userName, email, key, callback) {
     to: email,
     subject: "Validate your MATCHA account :)",
     html: `<html><h1>Hello ${userName}! Please click the link below to activate your Matcha account: </h1><br> \
-            <a href="https://qinder.cf/activate/${email}/${key}">Validate your account</a></html><br> \
-            Or copy, paste this link : <u>https://qinder.cf/activate/${email}/${key}</u>`,
+            <a href="http://localhost:8080/activate/${email}/${key}">Validate your account</a></html><br> \
+            Or copy, paste this link : <u>http://localhost:8080/activate/${email}/${key}</u>`,
   });
 
   callback(info);
@@ -557,8 +557,8 @@ async function nodeMailerResetPasswordCall(email, key, callback) {
     to: email,
     subject: "Reset your MATCHA password",
     html: `<html><h1>Hello, I am Clément from the Qinder team. Martin has let me know you forgot your credentials? Please click this link to reset your password: </h1><br> \
-            <a href="https://qinder.cf/resetPassword/${email}/${key}">Reset your password</a></html> <br> \
-            Or copy, paste this link : <u>https://qinder.cf/resetPassword/${email}/${key}</u>`,
+            <a href="http://localhost:8080/resetPwd?email=${email}&key=${key}">Reset your password</a></html> <br> \
+            Or copy, paste this link : <u>http://localhost:8080/resetPwd?email=${email}&key=${key}</u>`,
   });
 
   callback(info);
