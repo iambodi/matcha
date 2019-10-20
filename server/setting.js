@@ -16,13 +16,21 @@ exports.enterViewSetting = (req, res) => {
             success: false,
             message: 'User not found',
           });
-        } else {
+        } else if (response[0].confirm === 1){
+          
+          console.log(response[0].confirm);
           res.json({
             success: true,
             message: 'Successfully fetched user data',
             user: response
           });
-        }
+        } else
+        //EST CE QU'ON DECONNECTE L'UTILISATEUR SI SON COMPTE EST PAS CONFIRME ?
+          res.json({
+            success: false,
+            message: 'error',
+            user: response
+        });
       });
     } else {
       res.sendStatus(401);
@@ -58,13 +66,13 @@ exports.updateName = (req, res) => {
             console.log(err);
           }
           res.json({
-            message: '[BACK] YEAH USERNAME MODIFIED',
+            message: 'succes',
             success: true,
           });
         });
       } else {
         res.json({
-          message: '[BACK] FAILED TO UPDATE USERNAME',
+          message: 'error',
           success: false,
         });
       }
@@ -135,26 +143,26 @@ exports.updatePassword = (req, res) => {
                 console.log(err);
               } else if (response.changedRows === 1) {
                 res.json({
-                  message: 'Password successfully updated!',
+                  message: 'success',
                   success: true,
                 });
               } else {
                 res.json({
-                  message: '[BACK END ISSUE] failed to update password :/',
+                  message: 'error',
                   success: false,
                 });
               }
             });
           } else {
             res.json({
-              message: 'Current password is incorrect',
+              message: 'currentPwd',
               success: false,
             });
           }
         });
       } else {
         res.json({
-          message: 'Passwords don\'t match',
+          message: 'confirmPwd',
           success: false,
         });
       }
