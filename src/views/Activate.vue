@@ -7,7 +7,7 @@
     max-height="150"
     outlined
   >
-    <v-card-text text-center>
+    <v-card-text>
         <v-card-title>{{ activationText }}</v-card-title>
         <v-btn @click="submit">Verify your account</v-btn>
     </v-card-text>
