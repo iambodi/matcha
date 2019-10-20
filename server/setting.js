@@ -66,7 +66,7 @@ exports.updateName = (req, res) => {
             console.log(err);
           }
           res.json({
-            message: 'succes',
+            message: 'success',
             success: true,
           });
         });
@@ -90,6 +90,14 @@ exports.updateEmail = (req, res) => {
   } else {
     if (res) {
       if (req.body.newEmail) {
+
+
+        let checkMail = 'SELECT email FROM user WHERE email = ?';
+        let queryMAil = db.format(checkMail, [
+          req.body.newEmail
+        ]);
+
+
         let sql = 'UPDATE user SET email = ? WHERE id_user = ?';
         let query = db.format(sql, [
           req.body.newEmail,
@@ -97,16 +105,23 @@ exports.updateEmail = (req, res) => {
         ]);
         db.query(query, (err, response) => {
           if (err) {
+            if (err.code === 'ER_DUP_ENTRY'){
+              res.json({
+                message: 'emailTaken',
+                success: false,
+              });
+            }
             console.log(err);
-          }
+          } else {
           res.json({
-            message: '[BACK] YEAH EMAIL MODIFIED',
+            message: 'success',
             success: true,
           });
+        }
         });
       } else {
         res.json({
-          message: '[BACK] FAILED TO UPDATE EMAIL',
+          message: 'error',
           success: false,
         });
       }
