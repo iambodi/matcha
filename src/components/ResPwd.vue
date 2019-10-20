@@ -57,18 +57,16 @@ export default {
         const res = await axios.post("http://localhost:8001/resetPassword", {
           email: this.email,
         });
-        if (res.data.success === true) {
-          try {
-            this.snackbar = true;
-            const res = await axios.post("http://localhost:8001/resetPassword", {
-              email: this.email,
-            });
-          } catch (error) {
-            this.resText = 'Error, please retry';
-          }
+        if (res.data.message === "regex") {
+            this.resText = 'Please enter a valid email';
         }
-        this.resText = '';
-        console.log(res.data);
+        if (res.data.success === true) {
+            this.resText = 'Check your mail to reset your password';          
+        }
+        else {
+          console.log(res.data.message);
+          this.resText = 'Please retry';
+        }
       } catch (error) {
         this.resText = 'Error, please retry';
       }
