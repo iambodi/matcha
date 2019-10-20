@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" max-width="400px">
+  <v-dialog v-model="show" max-width="450px">
     <v-card>
       <v-card-title class="deep-orange lighten-1" primary-title>Login</v-card-title>
       <v-card-text>
