@@ -18,7 +18,6 @@ exports.enterViewSetting = (req, res) => {
           });
         } else if (response[0].confirm === 1){
           
-          console.log(response[0].confirm);
           res.json({
             success: true,
             message: 'Successfully fetched user data',
@@ -110,9 +109,14 @@ exports.updateEmail = (req, res) => {
                 message: 'emailTaken',
                 success: false,
               });
+            } else {
+              res.json({
+                message: 'error',
+                success: false,
+              });
             }
-            console.log(err);
-          } else {
+          }
+          else {
           res.json({
             message: 'success',
             success: true,

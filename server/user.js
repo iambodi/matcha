@@ -125,8 +125,8 @@ exports.removeUserTag = (req, res) => {
     res.sendStatus(500);
   } else {
     if (res) {
-      const sql = 'DELETE FROM userTag WHERE id_utag = ?';
-      let query = db.format(sql, [ req.params.id ]);
+      const sql = 'DELETE FROM userTag WHERE id_user = ? AND id_tag = ? ';
+      let query = db.format(sql, [ req.params.id, req.params.id_tag ]);
       db.query(query, (err) => {
         if (err) {
           res.json({ success: false, message: 'Network error' });

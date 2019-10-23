@@ -95,7 +95,7 @@ app.get('/getTags', urlencodedParser, checkUserToken, preference.getTags);
 app.get('/getUserTags/:id', urlencodedParser, checkUserToken, user.getUserTags);
 app.get('/getPreferenceTags/:id', urlencodedParser, checkUserToken, user.getPreferenceTags);
 app.get('/removeMatch/:id', urlencodedParser, checkUserToken, user.removeMatch);
-app.get('/removeUserTag/:id', urlencodedParser, checkUserToken, user.removeUserTag);
+app.get('/removeUserTag/:id/:id_tag', urlencodedParser, checkUserToken, user.removeUserTag);
 app.get('/removePrefTag/:id', urlencodedParser, checkUserToken, user.removePrefTag);
 
 app.get('/getProfilePhoto/:id', urlencodedParser, checkUserToken, user.getProfilePhoto);
