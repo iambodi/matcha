@@ -10,31 +10,45 @@
     max-width="444"
     class=" deep-orange lighten-1"
   >
-    <v-system-bar lights-out></v-system-bar>
-    <v-carousel
+    <!-- <v-system-bar lights-out></v-system-bar> -->
+    <!-- <v-carousel
       :continuous="false"
       :cycle="cycle"
       :show-arrows="true"
       hide-delimiter-background
       delimiter-icon="mdi-minus"
       height="300"
-    >
-      <v-carousel-item
+    > -->
+      <!-- <v-carousel-item
         v-for="(item,i) in items"
       :key="i"
       :src="item.src"
-      >
-      </v-carousel-item>
-    </v-carousel>
-    <v-list two-line>
-      <v-file-input
-    :rules="rules"
-    accept="image/png, image/jpeg, image/bmp"
+      > -->
+      <!-- <v-carousel-item
+        v-for="(item,i) in items"
+      :key="i"
+      :src="items"
+      > -->
+      <!-- </v-carousel-item> -->
+    <!-- </v-carousel> -->
+    <img :src="items" height="150">
+    <v-btn @click="onFilePick">Upload image</v-btn>
+      <input 
+      type="file" 
+      id="image"
+      ref="fileInput"
+      style="display:none"
+      accept="image/*"
+      @change="uploadPhoto"/>
+    <!-- <v-list two-line> -->
+      <!-- <v-file-input
+    accept="image/png, image/jpeg, image/jpg"
     placeholder="Pick an avatar"
     prepend-icon="mdi-camera"
     label="Avatar"
-  ></v-file-input>
-    </v-list>
+    @change="uploadPhoto"
+  ></v-file-input> -->
+    <!-- </v-list> -->
   </v-card>
     </v-col>
   
@@ -59,8 +73,7 @@
 <v-textarea
       counter
       label="Bio"
-      :rules="rules"
-      :value="value"
+      :value="bio"
     ></v-textarea>
     </v-card-text>
 
@@ -123,44 +136,48 @@ export default {
       id: localStorage.getItem('id'),
       tags: ['Netflix & chill', 'Athletic', 'Gastronomy', 'Nature lovers', 'Nightlife', 'Aventurer'],
       selected : Array(),
-      rules: [v => v.length <= 255 || 'Max 255 characters'],
-      value: 'Hello!',
+      // rules: [v => v.length <= 255 || 'Max 255 characters'],
+      bio: 'Hello!',
       gender : ['Male', 'Female'],
       cycle: false,
       snackbar: false,
+      userGender: "",
       resText : "",
-      items: [
-        {
-          src: 'https://i.ytimg.com/vi/LBDSrUFfGHI/maxresdefault.jpg',
-        },
-        {
-          src: 'https://petapixel.com/assets/uploads/2017/01/Official_portrait_of_Barack_Obama.jpg'
-        },
-      ],
+      // items: [],
+      items: '',
+      image: null,
+      imageUrl: '',
     }
     },
     
     mounted () {
       this.getTags();
+      this.getUser();
+      // this.getPhoto();
       // console.log(this.selected)
       },
 
     methods : {
-      async submit() {
+    //   async getPhoto() {
+    //   try {
+    //     const res = await axios.get("http://localhost:8001/getUserPhotos/" + this.id, {
+    //     });
+    //     for (var i = 0; i < res.data.photos.length ; i++) {
+    //       let test = {src: res.data.photos[i].photo};
+    //       this.items.push(test);
+
+    //     }
+    //   } catch (error) {
+    //     this.resText = 'Error, please retry';
+    //   }
+    // },
+      async getUser() {
       try {
-        this.snackbar = true;
-        const res = await axios.post("http://localhost:8001/login", {
-          email: this.login.email,
-          password: this.login.pwd
+        const res = await axios.get("http://localhost:8001/setting/" + this.id, {
         });
-        this.resText = res.data.message;
-        // console.log(res.data);
-        if (res.data.success === true){
-          localStorage.setItem('logged', true);
-          localStorage.setItem('token', res.data.token);
-          localStorage.setItem('id', res.data.user_id);          
-          window.location = 'http://localhost:8080'
-        }
+        this.userGender = res.data.user[0].gender;
+        this.bio = res.data.user[0].bio;
+        console.log(this.userGender);
       } catch (error) {
         this.resText = 'Error, please retry';
       }
@@ -194,6 +211,76 @@ export default {
         } catch (error) {
           this.resText = 'Error, please retry0';
         }
+      },
+
+      onFilePick () {
+        this.$refs.fileInput.click();
+      },
+      uploadPhoto(e) {
+
+        const files = e.target.files
+        console.log(files);
+        let filename = files[0].name;
+        if (filename.lastIndexOf('.') <= 0) {
+          return alert('Please add a valid file');
+        }
+        const fileReader = new FileReader();
+        
+        fileReader.addEventListener('load', () => {
+          this.imageUrl = fileReader.result
+        })
+        console.log(fileReader);
+        fileReader.readAsDataURL(files[0]);
+        fileReader.onload = function(e) {
+          console.log(e.target.result);
+        }
+        this.image = files[0];
+      //   // fr.readAsDataURL(e);
+      //   // console.log(fr.result);
+
+
+
+
+
+
+
+
+      //   let imageUrl;
+      //   let imageFile;
+      //   let imageName;
+      //   console.log(this.$refs.image)
+      //   // const files = e.target.files
+      //   //     if(files[0] !== undefined) {
+      //   //         imageName = files[0].name
+      //   //         if(imageName.lastIndexOf('.') <= 0) {
+      //   //             return
+      //   //         }
+      //   //         const fr = new FileReader ()
+      //   //         fr.readAsDataURL(files[0])
+      //   //     //    fr.addEventListener('load', () => {
+      //   //             imageUrl = fr.result
+      //   //             imageFile = files[0] // this is an image file that can be sent to server...
+      //   //       //  })
+      //   //     } else {
+      //   //         imageName = ''
+      //   //         imageFile = ''
+      //   //         imageUrl = ''
+      //   //     }
+      //       console.log(files);
+      //       console.log(imageUrl);
+      //       console.log(imageFile);
+      //       console.log(imageName);
+ 
+      // //  console.log(e);
+      //     // try{
+      //     //   const res = await axios.post('http://localhost:8001/uploadPhoto', {
+      //     //     id : this.id,
+      //     //     photo : ,
+      //     //     active: 1,
+      //     //   })
+      //     // } catch {
+
+      //     // }
       },
       check (tag) {
         if (this.selected.includes(tag)){
