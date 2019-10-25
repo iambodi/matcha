@@ -217,14 +217,17 @@ export default {
         this.$refs.fileInput.click();
       },
       uploadPhoto(e) {
-
         const files = e.target.files
-        console.log(files);
+        const fileSize = files[0].size / 1024 / 1024; // in MB        
+        // console.log(files);
         let filename = files[0].name;
         if (filename.lastIndexOf('.') <= 0) {
           return alert('Please add a valid file');
         }
-        const fileReader = new FileReader();
+        else if (fileSize > 2) {
+            alert('File size exceeds 2 MB');
+        } else {
+                  const fileReader = new FileReader();
         fileReader.addEventListener('load', () => {
           this.image = fileReader.result;
           // this.image = this.b64toBlob(this.image);
@@ -232,20 +235,22 @@ export default {
         this.addPhoto(this.image);
         })
         fileReader.readAsDataURL(files[0]);
-        this.image = files[0];        
+        this.image = files[0];
+          console.log('SUCCESS');
+        }        
       },
 
-        b64toBlob(test) {
+//         b64toBlob(test) {
 
-    var byteString = atob(test.split(',')[1]);
-    var ab = new ArrayBuffer(byteString.length);
-    var ia = new Uint8Array(ab);
+//     var byteString = atob(test.split(',')[1]);
+//     var ab = new ArrayBuffer(byteString.length);
+//     var ia = new Uint8Array(ab);
 
-    for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-    return new Blob([ab], { type: 'image/jpeg' });
-},
+//     for (var i = 0; i < byteString.length; i++) {
+//         ia[i] = byteString.charCodeAt(i);
+//     }
+//     return new Blob([ab], { type: 'image/jpeg' });
+// },
       async addPhoto(photo) {
         // console.log(photo);
           try {
