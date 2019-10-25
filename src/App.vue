@@ -1,7 +1,5 @@
 <template>
   <v-app color="red">
-    <Navbar />
-    <!-- <Register /> -->
     <v-content class="mx-10 mb-10">
       <router-view></router-view>
     </v-content>
@@ -13,9 +11,6 @@ import Navbar from '@/components/Navbar'
 
 export default {
   name: 'App',
-  components: {
-    Navbar,
-  },
   data: () => ({
     //
   }),

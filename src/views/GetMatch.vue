@@ -1,13 +1,6 @@
 <template>
   <v-container fluid fill-height justify-center align-center>
-      <v-card v-if="!logged" color="rgba(255, 0, 0, 0)" outlined>
-        <v-btn rounded color="error" width="20vw" @click.stop="register=true">Register
-        <Register v-model="register" /></v-btn>
-        <v-btn rounded color="primary" width="20vw" @click.stop="login=true">Login
-        <Login v-model="login" /></v-btn>
-      </v-card>
-
-<v-card v-else
+<v-card
     elevation="12"
     width="800"
   >

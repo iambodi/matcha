@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Register from './components/Register.vue'
-import ResetPwd from './views/ResetPwd.vue'
+import Main from './views/Main'
 
 Vue.use(Router)
 
@@ -11,48 +9,51 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register,
-    },
-    {
-      path: '/resetpwd',
-      name: 'resetpwd',
-      component: ResetPwd,
-    },  
-    {
       path: '/activate',
       name: 'activate',
-      component: () => import(/* webpackChunkName: "about" */ './views/Activate.vue')
+      component: () => import('./views/Activate')
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/reset',
+      name: 'resetPwd',
+      component: () => import('./views/ResetPwd')
     },
     {
-      path: '/lookingfor',
-      name: 'lookingfor',
-      component: () => import(/* webpackChunkName: "about" */ './views/Lookingfor.vue')
-      
+      path: '/',
+      name: 'home',
+      component: Main,
+      children: [
+        {
+          path: '/about',
+          name: 'about',
+          // route level code-splitting
+          // this generates a separate chunk (about.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import('./views/About.vue')
+        },
+        {
+          path: '/lookingfor',
+          name: 'lookingfor',
+          component: () => import('./views/Lookingfor.vue')
+        },
+        {
+          path: '/info',
+          name: 'info',
+          component: () => import('./views/Info.vue')
+        },
+        {
+          path: '*',
+          name: 'getMatch',
+          // route level code-splitting
+          // this generates a separate chunk (about.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import('./views/GetMatch.vue')
+        },
+      ]
     },
     {
-      path: '/info',
-      name: 'info',
-      component: () => import(/* webpackChunkName: "about" */ './views/Info.vue')
-    },
-    {
-      path: '/notif',
-      name: 'notif',
-      component: () => import(/* webpackChunkName: "about" */ './components/Notif.vue')
-    },
+      path: '*',
+      redirect: '/'
+    }
   ]
 })
