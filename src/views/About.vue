@@ -31,7 +31,7 @@
       > -->
       <!-- </v-carousel-item> -->
     <!-- </v-carousel> -->
-    <img :src="items" height="150">
+    <img :src="image" height="200">
     <v-btn @click="onFilePick">Upload image</v-btn>
       <input 
       type="file" 
@@ -225,62 +225,40 @@ export default {
           return alert('Please add a valid file');
         }
         const fileReader = new FileReader();
-        
         fileReader.addEventListener('load', () => {
-          this.imageUrl = fileReader.result
+          this.image = fileReader.result;
+          // this.image = this.b64toBlob(this.image);
+          console.log(this.image);
+        this.addPhoto(this.image);
         })
-        console.log(fileReader);
         fileReader.readAsDataURL(files[0]);
-        fileReader.onload = function(e) {
-          console.log(e.target.result);
+        this.image = files[0];        
+      },
+
+        b64toBlob(test) {
+
+    var byteString = atob(test.split(',')[1]);
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: 'image/jpeg' });
+},
+      async addPhoto(photo) {
+        // console.log(photo);
+          try {
+            
+          const res = await axios.post("http://localhost:8001/uploadPhoto", {
+            id :this.id,
+            photo: photo,
+            active: 1,
+          });
+          console.log(res);
+        } catch (error) {
+          console.log('Error, please retry');
         }
-        this.image = files[0];
-      //   // fr.readAsDataURL(e);
-      //   // console.log(fr.result);
-
-
-
-
-
-
-
-
-      //   let imageUrl;
-      //   let imageFile;
-      //   let imageName;
-      //   console.log(this.$refs.image)
-      //   // const files = e.target.files
-      //   //     if(files[0] !== undefined) {
-      //   //         imageName = files[0].name
-      //   //         if(imageName.lastIndexOf('.') <= 0) {
-      //   //             return
-      //   //         }
-      //   //         const fr = new FileReader ()
-      //   //         fr.readAsDataURL(files[0])
-      //   //     //    fr.addEventListener('load', () => {
-      //   //             imageUrl = fr.result
-      //   //             imageFile = files[0] // this is an image file that can be sent to server...
-      //   //       //  })
-      //   //     } else {
-      //   //         imageName = ''
-      //   //         imageFile = ''
-      //   //         imageUrl = ''
-      //   //     }
-      //       console.log(files);
-      //       console.log(imageUrl);
-      //       console.log(imageFile);
-      //       console.log(imageName);
- 
-      // //  console.log(e);
-      //     // try{
-      //     //   const res = await axios.post('http://localhost:8001/uploadPhoto', {
-      //     //     id : this.id,
-      //     //     photo : ,
-      //     //     active: 1,
-      //     //   })
-      //     // } catch {
-
-      //     // }
       },
       check (tag) {
         if (this.selected.includes(tag)){
@@ -295,7 +273,7 @@ export default {
           // console.log("does not contains " + tag);
             this.selected.push(tag);
             this.addUserTag(tag);
-                    // console.log(this.selected);
+                    console.log(this.selected);
     //        return true;
         }
       },
