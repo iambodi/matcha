@@ -2,7 +2,7 @@
   <v-col cols="12" md="6" lg="6" xl="6">
     <v-card elevation="15" max-width="444" class="deep-orange lighten-1">
       <v-carousel
-        v-if="items === undefined"
+        v-if="items.length != 0"
         :continuous="false"
         :cycle="cycle"
         :show-arrows="true"
@@ -34,6 +34,8 @@ export default {
   data() {
     return {
       items: [],
+      image: null,
+      imageUrl: "",
       cycle: false,
       id: localStorage.getItem("id")
     };
