@@ -93,7 +93,7 @@ export default {
          // window.location = 'http://localhost:8080'
         }
       } catch (error) {
-      //  this.resText = 'Error, please retry';
+        this.$emit('alertMsg', "fail", "Error, please retry")
       }
     }
   }

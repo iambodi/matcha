@@ -42,7 +42,7 @@ export default {
           this.pop = user.pop; // voir si c'est vraiment pop ou popularity
         }
       } catch (error) {
-        this.resText = "Error, please retry";
+        this.$emit('alertMsg', "fail", "Error, please retry")
       }
     },
     async updatePrefs() {
@@ -60,9 +60,9 @@ export default {
             id: this.id
           }
         );
-        this.resText = "Successfuly updated your informations";
+        this.$emit('alertMsg', "success", "Successfuly updated your informations")
       } catch (error) {
-        this.resText = "Error, please retry";
+        this.$emit('alertMsg', "fail", "Error, please retry")
       }
     }
   }

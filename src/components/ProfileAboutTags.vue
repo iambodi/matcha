@@ -66,7 +66,7 @@ export default {
           }
         }
       } catch (error) {
-    //    this.resText = "Error, please retry";
+        this.$emit('alertMsg', "fail", "Error, please retry")
       }
     }
   }
