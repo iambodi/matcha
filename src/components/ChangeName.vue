@@ -42,7 +42,7 @@
                     this.snackbar = true;
                     const res = await axios.get("http://localhost:8001/setting/" + this.id, {});
                     if (res.data.message === 'error') {
-                  //      this.text = 'An error occured, please retry, if it persist please sign out and sign in';
+                        this.$emit('alertMsg', "fail", "An error occured, please retry, if it persist please sign out and sign in")
                     }
                     else if (res.data.success === true) {
                         try {
@@ -52,18 +52,18 @@
                             newLastName: this.lastname,
                         });
                         if (res.data.message === 'success') {
-                   //         this.text = 'Users name modified';
+                            this.$emit('alertMsg', "success", "User name modified")
                         }
                         if (res.data.message === 'error') {
-                  //          this.text = 'Failed to update user\'s name';
+                            this.$emit('alertMsg', "fail", "Failed to update user's name")
                         }
 //                        console.log(res.data);
                         } catch (error) {
-            //                this.text = 'Error, please retry';
+                            this.$emit('alertMsg', "fail", "Error, please retry")
                         }
                     }
                 } catch (error) {
-         //           this.text = 'Error, please retry';
+                    this.$emit('alertMsg', "fail", "Error, please retry")
                 } // au lieu de this.text send un event au parent avec le texte a changer
             },
         },

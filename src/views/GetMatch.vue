@@ -118,7 +118,7 @@ export default {
           this.logged = true;
         }               
       } catch (error) {
-        this.resText = 'Error, please retry';
+     //   this.resText = 'Error, please retry';
       }
     },
   }

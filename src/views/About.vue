@@ -6,8 +6,8 @@
       <v-snackbar v-bind:timeout="5000" top v-model="snackbar"> 
         <div class="text-center"><span>{{resText}}</span></div>
       </v-snackbar>
-    <ProfilePicture/>
-    <ProfileAbout/>
+    <ProfilePicture v-on:alertMsg="fireAlert"/>
+    <ProfileAbout v-on:alertMsg="fireAlert"/>
   </v-row>
   </div>
 </template>
@@ -29,7 +29,10 @@ export default {
     },
     mounted () {
     },
-    methods : {
+    methods: {
+      fireAlert(state, message) {
+        this.$emit('alertMsg', state, message);
+      },
     },
 }
 </script>

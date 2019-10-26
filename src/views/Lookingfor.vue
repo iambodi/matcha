@@ -1,10 +1,10 @@
 <template>
 <v-row>
   <v-col cols="12" sm="6" md="4" lg="4" xl="4" >
-    <LookingForPrefs/>
+    <LookingForPrefs v-on:alertMsg="fireAlert"/>
   </v-col>
   <v-col>
-    <LookingForTags/>
+    <LookingForTags v-on:alertMsg="fireAlert"/>
   </v-col>
 </v-row>
 </template>
@@ -18,5 +18,10 @@ import LookingForPrefs from '../components/LookingForPrefs'
       LookingForTags,
       LookingForPrefs,
     },
+    methods: {
+      fireAlert(state, message) {
+        this.$emit('alertMsg', state, message);
+      },
+    }
   }
 </script>

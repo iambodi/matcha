@@ -58,7 +58,8 @@ export default {
           this.items.push(img);
         }
       } catch (error) {
-        this.resText = "Error, please retry";
+        this.$emit('alertMsg', "fail", "Error, please retry")
+      //  this.resText = "Error, please retry";
       }
     },
     onFilePick() {
@@ -69,12 +70,16 @@ export default {
       const fileSize = files[0].size / 1024 / 1024; // in MB
       let filename = files[0].name;
       if (this.items.length > 4) {
-        return alert("You can't have more than 5 pictures");
+        this.$emit('alertMsg', "fail", "You can't have more than 5 pictures")
+        return //alert("You can't have more than 5 pictures");
       }
       if (filename.lastIndexOf(".") <= 0) {
-        return alert("Please add a valid file");
+        this.$emit('alertMsg', "fail", "Please add a valid file")
+        return //alert("Please add a valid file");
       } else if (fileSize > 2) {
-        alert("File size exceeds 2 MB");
+        this.$emit('alertMsg', "fail", "File size exceeds 2MB")
+        return ;
+        //alert("File size exceeds 2 MB");
       } else {
         const fileReader = new FileReader();
         fileReader.addEventListener("load", () => {
@@ -83,7 +88,8 @@ export default {
         });
         fileReader.readAsDataURL(files[0]);
         this.imageUrl = files[0];
-        console.log("SUCCESS");
+        this.$emit('alertMsg', "success", "Successfuly uploaded picture !")
+      //  console.log("SUCCESS");
       }
     },
     async addPhoto(photo) {
@@ -95,7 +101,7 @@ export default {
           active: 1
         });
       } catch (error) {
-        console.log("Error, please retry");
+        this.$emit('alertMsg', "fail", "Error, please retry")
       }
     },
     async delPhoto(i) {
@@ -106,7 +112,7 @@ export default {
         });
         this.items.splice(i, 1);
       } catch (error) {
-        console.log("Error, please retry");
+        this.$emit('alertMsg', "fail", "Error, please retry")
       }
     }
   }

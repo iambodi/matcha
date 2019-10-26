@@ -106,14 +106,17 @@ export default {
               }
             );
             console.log(res.data);
+            this.$emit('alertMsg', "success", "Succesfuly changed your password !")
             // this.resText = 'Successfuly changed your password';
           } catch (error) {
-            // this.resText = 'Failed to change your password, please retry the processus'
+            this.$emit('alertMsg', "fail", "Failed to change your password, please retry the processus");
           }
         } else {
+            this.$emit('alertMsg', "fail", "Wrong link or token");
           // this.resText = 'Wrong link or token';
         }
       } catch (error) {
+        this.$emit('alertMsg', "fail", "Nothing here");
         // this.resText = 'Nothing here';
       }
     }

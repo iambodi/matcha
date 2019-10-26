@@ -1,10 +1,10 @@
 <template>
   <v-container v-if="!logged" fluid fill-height justify-center align-center>
-    <Login v-on:loggingSuccess="loggedIn"/>
+    <Login v-on:loggingSuccess="loggedIn" v-on:alertMsg="fireAlert"/>
   </v-container>
   <v-container v-else>
     <Navbar/>
-    <router-view></router-view>
+    <router-view v-on:alertMsg="fireAlert"></router-view>
   </v-container>
 </template>
 
@@ -42,7 +42,10 @@ export default {
       this.id = userId;
       console.log(userId);
       this.logged = true;
-    }
+    },
+    fireAlert(state, message) {
+      this.$emit('alertMsg', state, message);
+    },
   }
 };
 </script>

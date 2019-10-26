@@ -22,7 +22,7 @@ export default {
     data () {
         return {
             actived : false,
-            activationText : "",
+            // activationText : "",
             params: "",
             email: "",
             key: "",
@@ -66,17 +66,17 @@ export default {
                     // localStorage.getItem('id');
                     // console.log(res.data);
                     // app.input = localStorage.getItem(this.ID);
-                    this.activationText = 'Account successfully activated! You can now login'
+                    this.$emit('alertMsg', "success", "Account successfully activated! You can now login")
                     // console.log(this.ID);
                 } catch (error) {
-                    this.activationText = 'Failed to activate user account'
+                    this.$emit('alertMsg', "fail", "Failed to activate user account")
                 }
             } else if (res.data.key === this.key && res.data.confirm === 1) {
-                this.activationText = "You're already confirmed";            
+                this.$emit('alertMsg', "fail", "You're already confirmed")
             } else
-                this.activationText = 'Wrong link';
+                this.$emit('alertMsg', "fail", "Wrong link")
             } catch (error) {
-                this.activationText = 'Nothing here';
+                this.$emit('alertMsg', "fail", "Nothing here")
             }
         }
     },

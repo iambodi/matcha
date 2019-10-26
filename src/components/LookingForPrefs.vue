@@ -85,7 +85,7 @@ export default {
           this.pop = user.pop; // voir si c'est vraiment pop ou popularity
         }
       } catch (error) {
- //       this.resText = "Error, please retry";
+        this.$emit('alertMsg', "fail", "Error, please retry")
       }
     },
     updatePrefs() {

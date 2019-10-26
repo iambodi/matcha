@@ -6,9 +6,9 @@
         max-width="600"
     >
         <v-card-title class="deep-orange lighten-1 white--text">About you</v-card-title>
-            <ProfileAboutInfos/>
+            <ProfileAboutInfos v-on:alertMsg="fireAlert"/>
         <v-divider class="mx-4"></v-divider>
-            <ProfileAboutTags/>
+            <ProfileAboutTags v-on:alertMsg="fireAlert"/>
     </v-card>
 </v-col>
 </template>
@@ -31,6 +31,9 @@ import ProfileAboutTags from './ProfileAboutTags'
         mounted() {
         },
         methods: {
+            fireAlert(state, message) {
+                this.$emit('alertMsg', state, message);
+            },
         },
     }
 </script>
