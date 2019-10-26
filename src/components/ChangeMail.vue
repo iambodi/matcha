@@ -28,16 +28,16 @@
             }
         },
         mounted(){
-
+        
         },
         methods: {
       async submitMail() {
       try {
-        this.snackbar = true;
+        //this.snackbar = true;
         const res = await axios.get("http://localhost:8001/setting/" + this.id, {
         });
         if (res.data.message === 'error') {
-          this.resText = 'An error occured, please retry, if it persist please sign out and sign in';
+          this.$emit('alertMsg', "fail", "An error occured, please retry, if it persist please sign out and sign in");
         }
         else if (res.data.success === true) { 
           try {
@@ -46,24 +46,23 @@
               newEmail: this.email,
             });
             if (res.data.message === 'error') {
-    //          this.text = 'Failed to update email, please retry';
+                this.$emit('alertMsg', "fail", "Failed to update email, please retry");
             }
             else if (res.data.message === 'emailTaken') {
-      //        this.text = 'This email is already used';
+                this.$emit('alertMsg', "fail", "This email is already used");
             }
             else if (res.data.message === 'success') {
-       //       this.text = 'Email modified';
+                this.$emit('alertMsg', "fail", "Email modified");
             }
             else {
-        //    console.log(res.data);
-      //        this.text = 'Please retry';
+                this.$emit('alertMsg', "fail", "Please retry");
             }
           } catch (error) {
-         //   this.text = 'Error, please retry';
+            this.$emit('alertMsg', "fail", "Please retry");
           }
         }
       } catch (error) {
-    //    this.text = 'Error, please retry';
+            this.$emit('alertMsg', "fail", "Please retry");
       }
     },
         }

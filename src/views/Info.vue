@@ -3,9 +3,9 @@
       <!-- <v-snackbar v-bind:timeout="5000" top v-model="snackbar"> 
         <div class="text-center"><span>{{text}}</span></div>
       </v-snackbar> -->
-    <ChangeName/>
-    <ChangeMail/>
-    <ChangePassword/>
+    <ChangeName v-on:alertMsg="fireAlert"/>
+    <ChangeMail v-on:alertMsg="fireAlert"/>
+    <ChangePassword v-on:alertMsg="fireAlert"/>
   </v-row>
 </template>
 
@@ -23,13 +23,13 @@ export default {
     },
     data () {
       return {
-  //      text: "",
-        errorMessages: "",
-        snackbar: false,
         id: localStorage.getItem('id'), // passer id aux fils apres
       }
     },
     methods: {
+      fireAlert(state, message) {
+        this.$emit('alertMsg', state, message);
+      },
     },
 }
 </script>

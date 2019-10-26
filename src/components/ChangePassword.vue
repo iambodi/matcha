@@ -70,7 +70,7 @@
                     const res = await axios.get("http://localhost:8001/setting/" + this.id, {
                     });
                     if (res.data.message === 'error') {
-                   //     this.resText = 'An error occured, please retry, if it persist please sign out and sign in';
+                      this.$emit('alertMsg', "fail", "An error occured, please retry, if it persist please sign out and sign in")
                     }
                     else if (res.data.success === true) { 
                         try {
@@ -81,24 +81,24 @@
                                 newPasswordConfirmation: this.confirmpwd,
                             });
                             if (res.data.message === 'confirmPwd') {
-                          //      this.text = 'New password and confirm password don\'t match';
+                              this.$emit('alertMsg', "fail", "New password and confirm password don't match")
                             }
                             if (res.data.message === 'currentPwd') {
-                        //        this.text = 'Current password is incorrect';
+                              this.$emit('alertMsg', "fail", "Current password is incorrect")
                             }
                             if (res.data.message === 'error') {
-                           //     this.text = 'Failed to update password';
+                              this.$emit('alertMsg', "fail", "Failed to update password")
                             }
                             if (res.data.message === 'success') {
-                          //      this.text = 'Password successfully updated';
+                              this.$emit('alertMsg', "success", "Password successfully updated")
                             }
                           //  console.log(res.data);
                         } catch (error) {
-                      //      this.text = 'Error, please retry';
+                          this.$emit('alertMsg', "fail", "Error, please retry")
                         }
                     }
                 } catch (error) {
-              //      this.text = 'Error, please retry';
+                  this.$emit('alertMsg', "fail", "Error, please retry")
                 }
             },
         },
