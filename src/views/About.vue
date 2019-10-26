@@ -55,11 +55,17 @@
             <v-card-title class="deep-orange lighten-1 white--text">About you</v-card-title>
             <v-card-text>
               <v-col cols="12" sm="6">
-                <v-select label="Gender" :items="gender"></v-select>
+                <v-select
+                v-model="setGender"
+                label="Gender"
+                :items="gender"
+                ></v-select>
               </v-col>
               <div class="my-4 subtitle-1 black--text">Write something about yourself:</div>
-              <v-textarea counter label="Bio" :value="bio"></v-textarea>
-              <v-btn @click="updatePrefs"></v-btn>
+              //ICI fixer limite a 255 caracteres
+              <v-textarea v-model="bio" counter label="Bio" :value="bio"></v-textarea>
+              <v-btn @click="updatePrefs">Update</v-btn>
+            //
             </v-card-text>
 
             <v-divider class="mx-4"></v-divider>
@@ -105,6 +111,7 @@ export default {
       selected: Array(),
       // rules: [v => v.length <= 255 || 'Max 255 characters'],
       bio: "Hello!",
+      setGender: "",
       gender: ["Male", "Female"],
       cycle: false,
       snackbar: false,
@@ -316,7 +323,7 @@ export default {
         if (res.data && res.data.user && res.data.user.length != 0) {
           let user = res.data.user[0];
           this.bio = user.bio;
-          this.gender = user.gender;
+          this.setGender = user.gender;
           this.interests = user.interest;
           this.distance = user.distance;
           this.agerange = [user.minage, user.maxage]
@@ -330,7 +337,7 @@ export default {
       try {
         const res = await axios.post("http://localhost:8001/updatePreferences", {
           bio: this.bio,
-          gender: this.gender,
+          gender: this.setGender,
           interest: this.interests,
           distance: this.distance,
           minage: this.agerange[0],
@@ -338,6 +345,7 @@ export default {
           pop: this.pop,
           id: this.id
         });
+        this.resText = 'Successfuly updated your informations';
       } catch (error) {
         this.resText = "Error, please retry";
       }
