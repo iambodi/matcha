@@ -3,9 +3,6 @@
       <v-card-title class="deep-orange lighten-1" primary-title>Login</v-card-title>
       <v-card-text>
         <v-form>
-          <v-snackbar v-bind:timeout="5000" top v-model="snackbar"> 
-            <div class="text-center"><span>{{resText}}</span></div>
-          </v-snackbar>
           <v-text-field
             v-model="login.email"
             label="Email"
@@ -50,8 +47,6 @@ export default {
       register: false,
       id: localStorage.getItem('id'),
       ResPwd: false,
-      snackbar: false,
-      resText : "",
       login: {
         email: "",
         pwd: "",
@@ -78,23 +73,25 @@ export default {
   methods: {
     async submit() {
       try {
-        this.snackbar = true;
         const res = await axios.post("http://localhost:8001/login", {
           email: this.login.email,
           password: this.login.pwd
         });
-        this.resText = res.data.message;
-       // console.log(res.data);
         if (res.data.success === true){
           localStorage.setItem('logged', true);
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('id', res.data.user_id);      
           this.$emit('loggingSuccess', res.data.user_id);
-         // window.location = 'http://localhost:8080'
-        }
-      } catch (error) {
-        this.$emit('alertMsg', "fail", "Error, please retry")
+          this.$emit('alertMsg', "success", res.data.message);
+          axios.post("http://localhost:8001/getUserOnline", {
+          userId: this.id,
+          online: 1,
+          });
       }
+      } catch (error) {
+        this.$emit('alertMsg', "fail", "Error, please retry");
+      }
+
     }
   }
 };

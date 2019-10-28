@@ -3,7 +3,7 @@
     <Login v-on:loggingSuccess="loggedIn" v-on:alertMsg="fireAlert"/>
   </v-container>
   <v-container v-else>
-    <Navbar/>
+    <Navbar v-on:loggingOutSuccess="loggedOut"/>
     <router-view v-on:alertMsg="fireAlert"></router-view>
   </v-container>
 </template>
@@ -27,6 +27,9 @@ export default {
       selected : [],
     }
   },
+  created () {
+    document.addEventListener('beforeunload', this.loggedOut);
+  },
   mounted () {
     // recup du localstorage et si ya rien set a -1 et logged a false
   },
@@ -40,8 +43,20 @@ export default {
     loggedIn(userId)
     {
       this.id = userId;
-      console.log(userId);
+     // console.log(userId);
       this.logged = true;
+    },
+    loggedOut()
+    {
+      this.id = -1;
+      this.logged = false; // penser a faire la requete qui delog et enregistre la derniere heure de connection
+      axios.post("http://localhost:8001/getUserOnline", {
+        userId: this.id,
+        online: 0,
+      });
+      axios.post("http://localhost:8001/saveLastConnection", {
+        userId: this.id,
+      });
     },
     fireAlert(state, message) {
       this.$emit('alertMsg', state, message);

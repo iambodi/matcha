@@ -384,7 +384,7 @@ exports.login = (req, res) => {
     });
   }
 };
-
+// gerer le token un jour
 const regex = {
   pwd:  RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$'),
   mail:  RegExp('^[^\W][A-z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$'),

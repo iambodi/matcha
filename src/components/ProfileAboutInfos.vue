@@ -31,7 +31,7 @@ export default {
       try {
         const res = await axios.get(
           "http://localhost:8001/setting/" + this.id, {});
-        console.log(res);
+     //   console.log(res);
         if (res.data && res.data.user && res.data.user.length != 0) {
           let user = res.data.user[0];
           this.bio = user.bio;
