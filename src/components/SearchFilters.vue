@@ -85,6 +85,7 @@ export default {
   mounted() {
     this.getPrefs();
     this.getPrefTags();
+    this.applyFilters();
   },
   methods: {
     check (tag) {

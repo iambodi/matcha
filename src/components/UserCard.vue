@@ -27,11 +27,11 @@
             </v-col>
 
             <v-col class="px-0">
-                <v-icon>mdi-car-side</v-icon> XX km
+                <v-icon>mdi-car-side</v-icon> {{user.dist.toFixed(0)}} km
             </v-col>
 
             <v-col class="px-0">
-                <v-icon>mdi-star-outline</v-icon>  {{user.popularity.toFixed(1)}}
+                <v-icon>mdi-star-outline</v-icon>  {{user.popularity.toFixed(0)}}
             </v-col>
           </v-row>
         </v-col>

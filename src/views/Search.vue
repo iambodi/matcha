@@ -3,11 +3,12 @@
     <v-row justify="center">
       <SearchFilters v-on:applyFilters="filterResult"/>
       <v-btn @click="displayUsers">display users</v-btn>
+        <v-btn @click="displayMe">display me</v-btn>
     </v-row>
     <UserCard v-for="(user, i) in displayedUsers" :key="i" :user="user"/>
   </v-col>
 </template>
-
+// STILL HAVE TO FILTER FROM TAGS
 
 <script>
 import SearchFilters from "../components/SearchFilters";
@@ -28,11 +29,13 @@ export default {
       agerange: [],
       pop: "",
       displayedUsers: [],
+      lat: 0.0,
+      long: 0.0,
     };
   },
   async created() {
-    await this.getAllUsers();
     await this.getPrefs();
+    await this.getAllUsers();
     this.displayedUsers = this.users;
   },
   methods: {
@@ -45,7 +48,8 @@ export default {
           if (this.users[i].interest === "Both" || this.users[i].interest === params.gender)
             if (this.users[i].age >= params.minage && this.users[i].age <= params.maxage)
               if (this.users[i].popularity >= params.pop)
-                this.displayedUsers.push(this.users[i]); // rajouter le filtre de km
+                if (this.users[i].dist <= params.distance)
+                  this.displayedUsers.push(this.users[i]); // rajouter le filtre de km
         }
       }
       else
@@ -55,7 +59,8 @@ export default {
           if (params.interests === this.users[i].gender && (this.users[i].interest === "Both" || this.users[i].interest === params.gender))
             if (this.users[i].age >= params.minage && this.users[i].age <= params.maxage)
               if (this.users[i].popularity >= params.pop)
-                this.displayedUsers.push(this.users[i]); // rajouter le filtre de km
+                if (this.users[i].dist <= params.distance)
+                  this.displayedUsers.push(this.users[i]); // rajouter le filtre de km
         }
       }
   //    console.log(params);
@@ -66,6 +71,9 @@ export default {
     displayUsers() {
       console.log(this.users);
     },
+    displayMe() {
+      console.log({id:this.id, gender:this.gender, interests:this.interests, distance:this.distance, pop:this.pop, lat:this.lat, long:this.long});
+    },
     async getAllUsers() {
       try {
         const res = await axios.post("http://localhost:8001/getAllUsers/", {
@@ -73,6 +81,7 @@ export default {
         });
         this.users = res.data.people_list;
         this.calculateAge();
+        this.calculateDist();
       } catch (err) {
         this.$emit("alertMsg", "fail", "Couldn't retrieve list of users");
       }
@@ -94,6 +103,35 @@ export default {
         this.users[i].age = this.getAge(date);
       }
     },
+    calculateDist() {
+        for (let i = 0; i < this.users.length; i++) {
+          let test = JSON.parse(this.users[i].position);
+          this.users[i].lat = test.latitude;
+          this.users[i].long = test.longitude;
+          this.users[i].dist = this.getDist(this.lat, this.long, test.latitude, test.longitude, 'K');
+        }
+    },
+    getDist(lat1, lon1, lat2, lon2, unit) {
+	if ((lat1 == lat2) && (lon1 == lon2)) {
+		return 0;
+	}
+	else {
+		var radlat1 = Math.PI * lat1/180;
+		var radlat2 = Math.PI * lat2/180;
+		var theta = lon1-lon2;
+    var radtheta = Math.PI * theta/180;
+		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+		if (dist > 1) {
+			dist = 1;
+    }
+		dist = Math.acos(dist);
+		dist = dist * 180/Math.PI;
+		dist = dist * 60 * 1.1515;
+		if (unit=="K") { dist = dist * 1.609344 }
+		if (unit=="N") { dist = dist * 0.8684 }
+		return dist;
+	}
+    },
     async getPrefs() {
       try {
         const res = await axios.get(
@@ -108,6 +146,9 @@ export default {
           this.distance = user.distance;
           this.agerange = [user.minage, user.maxage];
           this.pop = user.pop;
+          let tmp = JSON.parse(user.position);
+          this.lat = tmp.latitude;
+          this.long = tmp.longitude;
         }
       } catch (error) {
         this.$emit("alertMsg", "fail", "Error, please retry");
