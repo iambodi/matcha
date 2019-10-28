@@ -300,8 +300,8 @@ exports.saveUserLastConnection = (req, res) => {
     res.sendStatus(500);
   } else {
     if (res) {
-      const sql = 'UPDATE user SET last_connected = NOW() WHERE id_user = ?';
-      const query = db.format(sql, [req.body.date, req.body.userId]);
+      const sql = 'UPDATE user SET last_connected = DATE(NOW()) WHERE id_user = ?';
+      const query = db.format(sql, [req.body.userId]);
       db.query(query, (err) => {
         if (err) {
           res.json({
@@ -313,6 +313,38 @@ exports.saveUserLastConnection = (req, res) => {
             success: true,
             message: 'Successfully saved last connection'
           });
+        }
+      });
+    } else {
+      res.sendStatus(401);
+    }
+  }
+};
+
+exports.getAllUsers = (req, res) => {
+  if (!req.body) {
+    res.sendStatus(500);
+  } else {
+    if (res) {
+        sql = 'SELECT user.id_user, firstname, lastname, gender, birthdate, interest, bio, popularity, online, last_connected, popularity, photo FROM user INNER JOIN photo ON user.id_user = photo.id_user \
+        WHERE NOT EXISTS(SELECT null FROM swipe WHERE user.id_user = swipe.id_user_matched)  \
+        AND user.id_user != ?';
+        query = db.format(sql, [
+          req.body.id,
+        ]);
+      db.query(query, (err, response) => {
+        if (err) {
+          console.log(err);
+          res.json({ success: false, message: 'No user found' });
+        } else {
+          if (response[0]) {
+            res.json({
+              success: true,
+              people_list: response,
+            });
+          } else {
+            res.json({ success: false, message: 'There is no more Qinders, try to change your parameters' });
+          }
         }
       });
     } else {

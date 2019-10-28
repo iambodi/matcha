@@ -31,7 +31,7 @@
             </v-list-item>
             <v-spacer></v-spacer>
         </v-list>
-        <v-btn color="white">
+        <v-btn color="white" @click="logOut">
                 <span class="red--text">Sign out</span>
                 <v-icon class="red--text" right>mdi-exit-to-app</v-icon>
             </v-btn>
@@ -52,7 +52,10 @@ export default {
             chat: false,
             drawer: false,
             logged: true,
+            id: localStorage.getItem('id'),
             links: [
+                { icon: 'mdi-account-search-outline', text: 'Search users', route: '/search' },
+                { icon: 'mdi-account-card-details-outline', text: 'Get Suggestion', route: '/getMatch' },
                 { icon: 'mdi-account-circle-outline', text: 'About you', route: '/about' },
                 { icon: 'mdi-account-heart-outline', text: 'Looking for', route: '/lookingfor' },
                 { icon: 'mdi-information-outline', text: 'Personal informations', route: '/info' },
@@ -66,7 +69,10 @@ export default {
     methods: {
         redirect () {
             window.location = 'http://localhost:8080';
-        }
+        },
+        logOut () {
+            this.$emit('loggingOutSuccess');
+        },
     }
 }
 </script>

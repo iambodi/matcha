@@ -74,6 +74,9 @@ app.post('/getUserToSwipe/', urlencodedParser, checkUserToken, home.getUserToSwi
 app.post('/getTheHeavens/', urlencodedParser, checkUserToken, home.getTheHeavens);
 app.post('/swipe/', urlencodedParser, checkUserToken, home.swipe);
 
+app.post('/getAllUsers/', urlencodedParser, checkUserToken, home.getAllUsers);
+
+
 // app.post('/saveMessage', urlencodedParser, checkUserToken, chat.saveMessage);
 
 app.post('/getUserOnline', urlencodedParser, checkUserToken, home.getUserOnline);

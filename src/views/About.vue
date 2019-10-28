@@ -3,9 +3,6 @@
   
   <div class="about">
     <v-row justify="center" align="center">
-      <v-snackbar v-bind:timeout="5000" top v-model="snackbar"> 
-        <div class="text-center"><span>{{resText}}</span></div>
-      </v-snackbar>
     <ProfilePicture v-on:alertMsg="fireAlert"/>
     <ProfileAbout v-on:alertMsg="fireAlert"/>
   </v-row>
@@ -23,8 +20,6 @@ export default {
   data () {
     return {
       id: localStorage.getItem('id'),
-      snackbar: false,
-      resText : "",
       }
     },
     mounted () {

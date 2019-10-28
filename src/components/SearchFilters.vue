@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card class="text-center">
-      <v-card-title class="deep-orange lighten-1 white--text mb-4">Looking for</v-card-title>
+      <v-card-title class="deep-orange lighten-1 white--text mb-4">Change Filters</v-card-title>
       <v-card-text>
         <v-select
           v-model="interests"
@@ -36,7 +36,26 @@
       <v-card-text>
         <v-slider v-model="pop" thumb-label="always" track-color="grey"></v-slider>
       </v-card-text>
-      <v-btn class="mb-4" @click="updatePrefs">Update Prefs</v-btn>
+
+      <v-divider></v-divider>
+
+        <v-card-text>
+                <v-chip-group
+                    column
+                    multiple
+                    active-class='deep-orange lighten-1 white--text'
+                    v-model="selectedNumber"
+                >
+                <v-chip
+                    v-for="(tag, i) in tags"
+                    :key="i"
+                    @click="check(tag)"
+                > 
+                    {{ tag }}
+                </v-chip>
+                </v-chip-group>
+        </v-card-text>
+            <v-btn class="mb-4" @click="applyFilters">Apply Filters</v-btn>
     </v-card>
   </div>
 </template>
@@ -44,7 +63,6 @@
 export default {
   data() {
     return {
-      bio: "",
       gender: "",
       interests: "Both",
       distance: 0,
@@ -66,8 +84,31 @@ export default {
   },
   mounted() {
     this.getPrefs();
+    this.getPrefTags();
   },
   methods: {
+    check (tag) {
+        if (this.selected.includes(tag)){
+            var index = this.selected.indexOf(tag);                
+            this.selected.splice(index, 1);
+        }
+        else
+        {
+            this.selected.push(tag);
+        }
+    },
+    applyFilters () {
+        this.$emit('applyFilters', 
+        {
+            gender:this.gender,
+            interests:this.interests,
+            distance:this.distance,
+            pop:this.pop,
+            minage:this.agerange[0],
+            maxage:this.agerange[1],
+            tags:this.selected,
+        })
+    },
     async getPrefs() {
       try {
         const res2 = await axios.get(
@@ -76,7 +117,6 @@ export default {
         );
         if (res2.data && res2.data.user && res2.data.user.length != 0) {
           let user = res2.data.user[0];
-          this.bio = user.bio;
           this.gender = user.gender;
           this.interests = user.interest;
           this.distance = user.distance;
@@ -87,16 +127,27 @@ export default {
         this.$emit('alertMsg', "fail", "Error, please retry")
       }
     },
+    async getPrefTags(){
+        try {
+            const res = await axios.get("http://localhost:8001/getPreferenceTags/" + this.id, {});
+            if (res.data && res.data.prefTags && res.data.prefTags.length > 0) {
+                for (var i = 0; i < res.data.prefTags.length; i++) {
+                    this.selected.push(this.tags[(res.data.prefTags[i].id_tag - 1)]);
+                    this.selectedNumber.push(res.data.prefTags[i].id_tag - 1);
+                }
+            }
+        } catch (error) {
+            this.$emit('alertMsg', "fail", "Error, please retry")
+        }
+    },
     updatePrefs() {
       axios.post("http://localhost:8001/updatePreferences", {
-        bio: this.bio,
         gender: this.gender,
         interest: this.interests,
         distance: this.distance,
         minage: this.agerange[0],
         maxage: this.agerange[1],
         pop: this.pop,
-        id: this.id
       });
     }
   }
