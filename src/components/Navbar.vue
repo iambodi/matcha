@@ -10,6 +10,9 @@
                 <v-btn icon @click.stop="notif=true">
                     <v-icon>mdi-bell-outline</v-icon>
                     <Notif v-model="notif" /></v-btn>
+                    <v-btn icon @click.stop="chat=true">
+                    <v-icon>mdi-forum-outline</v-icon>
+                    <Chat v-model="chat" /></v-btn>
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" app class="deep-orange lighten-1">
             <v-layout class="pb-5" align-center justify-space-between column fill-height>
@@ -39,11 +42,14 @@
 
 <script>
 import Notif from '../components/Notif'
+import Chat from '../components/Chat'
+
 
 export default {
     data() {
         return {
             notif: false,
+            chat: false,
             drawer: false,
             logged: true,
             id: localStorage.getItem('id'),
@@ -58,6 +64,7 @@ export default {
     },
     components: {
         Notif,
+        Chat
     },
     methods: {
         redirect () {

@@ -82,7 +82,7 @@ app.post('/getAllUsers/', urlencodedParser, checkUserToken, home.getAllUsers);
 app.post('/getUserOnline', urlencodedParser, checkUserToken, home.getUserOnline);
 app.post('/saveLastConnection', urlencodedParser, checkUserToken, home.saveUserLastConnection);
 
-// app.post('/addNotification', urlencodedParser, checkUserToken, notification.addNotification);
+app.post('/addNotification', urlencodedParser, checkUserToken, notification.addNotification);
 
 // GET routes
 app.get('/setting/:id', urlencodedParser, checkUserToken, setting.enterViewSetting);
@@ -105,5 +105,5 @@ app.get('/getProfilePhoto/:id', urlencodedParser, checkUserToken, user.getProfil
 
 app.get('/randomUser', urlencodedParser, generator.randomUser);
 
-// app.get('/getNotifications/:id', urlencodedParser, checkUserToken, notification.getNotifications);
-// app.get('/deleteNotifications/:id', urlencodedParser, checkUserToken, notification.deleteNotification);
+app.get('/getNotifications/:id', urlencodedParser, checkUserToken, notification.getNotifications);
+app.get('/deleteNotifications/:id', urlencodedParser, checkUserToken, notification.deleteNotification);

@@ -16,7 +16,7 @@
           </v-btn>
         </v-carousel-item>
       </v-carousel>
-      <v-btn @click="onFilePick">Upload image</v-btn>
+      <v-btn @click="onFilePick" block tile style="border-radius: 0px 0px 5px 5px"><v-icon left>mdi-camera-outline</v-icon>Upload image</v-btn>
       <input
         type="file"
         id="image"
