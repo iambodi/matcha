@@ -52,10 +52,48 @@ export default {
     //Notifs
   },
   methods: {
+    getGeolocFromIP(userId) {
+      const url = "http://ip-api.com/json/";
+      const invocation = new XMLHttpRequest();
+
+      if (invocation){
+        invocation.open('GET', url, true);
+        invocation.onreadystatechange = () => {
+          if (invocation.readyState === 4 && invocation.status === 200) {
+           // console.log(invocation)
+            const jsonres = JSON.parse(invocation.response)
+           // console.log(jsonres.lat);
+           // console.log(jsonres.lon);
+            axios.post("http://localhost:8001/updateGeolocation", {
+              id_user: userId,
+              latitude: jsonres.lat,
+              longitude: jsonres.lon,
+            })
+          }
+          else {
+            this.$emit("alertMsg", 'fail', "couldn't join the tracking api") // jarrive pas a lancer ca
+          }
+        }
+        invocation.send();
+      }
+    },
     loggedIn(userId) {
       this.id = userId;
-     // console.log(userId);
-      this.logged = true;
+      this.logged = true;       // IF USER DOESNT HAVE POSITION LETS DO THIS
+      if (!(navigator.geolocation)){
+        this.getGeolocFromIP(userID);       
+      }
+      else {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          axios.post("http://localhost:8001/updateGeolocation", {
+            id_user: userId,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          })
+          },
+          this.getGeolocFromIP(userId)
+        );
+      }
     },
     loggedOut()
     {

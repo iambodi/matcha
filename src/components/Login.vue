@@ -35,7 +35,6 @@
       </v-card>
 </template>
 
-
 <script>
 import ResPwd from './ResPwd'
 import Register from './Register'
