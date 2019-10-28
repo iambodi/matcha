@@ -4,7 +4,7 @@
   </v-container>
   <v-container v-else>
     <Navbar />
-    <router-view v-on:alertMsg="fireAlert"></router-view>
+    <router-view v-on:alertMsg="fireAlert" v-on:notif=""></router-view>
   </v-container>
 </template>
 
@@ -56,6 +56,9 @@ export default {
     },
     fireAlert(state, message) {
       this.$emit("alertMsg", state, message);
+    },
+    notif() {
+      this.$emit(notif, obj);
     }
   }
 };

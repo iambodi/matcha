@@ -8,10 +8,16 @@ http3.listen(5000, function() {
 });
 
 io.sockets.on('connection', function(socket) {
+    console.log('Made socket connection', socket.id);
     socket.on('notification', (obj) => {
-        socket.broadcast.emit('receive notifications', obj);
+        io.emit('MESSAGE', obj)
+        console.log(obj);
     });
 });
+
+// socket.on('notification', (obj) => {
+//     socket.broadcast.emit('receive notifications', obj);
+// });
 
 exports.addNotification = (req, res) => {
   if (!req.body) {
