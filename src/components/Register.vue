@@ -12,13 +12,26 @@
           <v-container>
             <v-row>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="user.firstname" label="First name*" required></v-text-field>
+                <v-text-field
+                v-model="user.firstname"
+                label="First name*"
+                hint="Between 2 and 20 characters, number and [ ] are accepted"
+                required
+                ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   v-model="user.lastname"
                   label="Last name*"
-                  hint="helper text"
+                  hint="Between 2 and 20 characters, number and [ ] are accepted"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="user.username"
+                  label="Username*"
+                  hint="Between 2 and 20 characters. At least 2 letters, number and [-] are accepted"
                   required
                 ></v-text-field>
               </v-col>
@@ -79,6 +92,7 @@ export default {
   data() {
     return {
       user: {
+        username: "",
         firstname: "",
         lastname: "",
         email: "",
@@ -100,6 +114,7 @@ export default {
     async submit() {
        try {
           const res = await axios.post("http://localhost:8001/register", {
+            username : this.user.username,
             firstname: this.user.firstname,
             lastname: this.user.lastname,
             email: this.user.email,
@@ -112,7 +127,11 @@ export default {
           const error = res.data.message;
           if (error === "firstname" || error === "lastname")      
             this.resText = `${error} : must contain between 2 and 20 characters. [-] and [ ] are accepted`;
-          if (error === "confirmPwd")
+          if (error === "username")
+            this.resText = "Username must contain between 2 and 20 characters. At least 2 letters, number and [-] are accepted";
+          if (error === "usernameTaken")
+            this.resText = "Username already taken";
+         if (error === "confirmPwd")
             this.resText = "Password and confirm password don't match";
           if (error === "regexPwd")
             this.resText = "Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number";
