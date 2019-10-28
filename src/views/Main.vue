@@ -5,7 +5,7 @@
   <v-container v-else>
     <Navbar v-on:loggingOutSuccess="loggedOut"/>
     <Navbar />
-    <router-view v-on:alertMsg="fireAlert" v-on:notif=""></router-view>
+    <router-view v-on:alertMsg="fireAlert"></router-view>
   </v-container>
 </template>
 
@@ -16,7 +16,6 @@ import io from "socket.io-client";
 import Register from "../components/Register";
 import Login from "../components/Login";
 import Navbar from "../components/Navbar";
-// import Notifs from '../components/Notifs'
 
 export default {
   data() {
@@ -40,11 +39,6 @@ export default {
   created () {
     document.addEventListener('beforeunload', this.loggedOut);
   },
-  mounted() {
-    this.socket.on("MESSAGE", data => {
-      this.messages = [...this.messages, data];
-    });
-  },
   components: {
     Register,
     Login,
@@ -60,10 +54,7 @@ export default {
         invocation.open('GET', url, true);
         invocation.onreadystatechange = () => {
           if (invocation.readyState === 4 && invocation.status === 200) {
-           // console.log(invocation)
             const jsonres = JSON.parse(invocation.response)
-           // console.log(jsonres.lat);
-           // console.log(jsonres.lon);
             axios.post("http://localhost:8001/updateGeolocation", {
               id_user: userId,
               latitude: jsonres.lat,
@@ -110,9 +101,6 @@ export default {
     fireAlert(state, message) {
       this.$emit("alertMsg", state, message);
     },
-    notif() {
-      this.$emit(notif, obj);
-    }
   }
 };
 </script>

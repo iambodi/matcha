@@ -28,7 +28,7 @@
 </template>
 
 <script>
-// import io from "socket.io-client";
+import io from "socket.io-client";
 
 export default {
   data() {
@@ -36,14 +36,14 @@ export default {
       user: "",
       message: "",
       messages: [],
-    //   socket: io("localhost:5000")
+      socket: io("localhost:5000")
     };
   },
-//   mounted() {
-//         this.socket.on('MESSAGE', (data) => {
-//             this.messages = [...this.messages, data];
-//         });
-//     },
+  mounted() {
+        this.socket.on('MESSAGE', (data) => {
+            this.messages = [...this.messages, data];
+        });
+    },
   methods: {
     sendMessage(e) {
       e.preventDefault();
