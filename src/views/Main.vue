@@ -1,9 +1,9 @@
 <template>
   <v-container v-if="!logged" fluid fill-height justify-center align-center>
-    <Login v-on:loggingSuccess="loggedIn" v-on:alertMsg="fireAlert"/>
+    <Login v-on:loggingSuccess="loggedIn" v-on:alertMsg="fireAlert" />
   </v-container>
   <v-container v-else>
-    <Navbar/>
+    <Navbar />
     <router-view v-on:alertMsg="fireAlert"></router-view>
   </v-container>
 </template>
@@ -11,41 +11,52 @@
 
 
 <script>
-import Register from '../components/Register';
-import Login from '../components/Login';
-import Navbar from '../components/Navbar';
+import io from "socket.io-client";
+import Register from "../components/Register";
+import Login from "../components/Login";
+import Navbar from "../components/Navbar";
 // import Notifs from '../components/Notifs'
 
 export default {
-  data () {
+  data() {
     return {
       id: -1,
       logged: false,
       loading: false,
       actions: true,
-      tags: ['Netflix & chill', 'Adventurer', 'Athletic', 'Gastronomy', 'Nature lovers', 'Nightlife', 'Romantic', 'Gamer'],
-      selected : [],
-    }
+      tags: [
+        "Netflix & chill",
+        "Adventurer",
+        "Athletic",
+        "Gastronomy",
+        "Nature lovers",
+        "Nightlife",
+      ],
+      selected: [],
+      socket: io("localhost:5000")
+    };
   },
-  mounted () {
+  mounted() {
+    this.socket.on("MESSAGE", data => {
+      this.messages = [...this.messages, data];
+    });
     // recup du localstorage et si ya rien set a -1 et logged a false
   },
   components: {
     Register,
     Login,
-    Navbar,
+    Navbar
     //Notifs
   },
   methods: {
-    loggedIn(userId)
-    {
+    loggedIn(userId) {
       this.id = userId;
       console.log(userId);
       this.logged = true;
     },
     fireAlert(state, message) {
-      this.$emit('alertMsg', state, message);
-    },
+      this.$emit("alertMsg", state, message);
+    }
   }
 };
 </script>
