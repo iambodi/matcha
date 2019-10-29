@@ -1,6 +1,14 @@
 const db = require('./database.js');
 const passwordHash = require('password-hash');
 
+const regex = {
+  pwd: RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$'),
+  mail: RegExp('^[^\W][A-z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$'),
+  lenght: RegExp('[A-zÀ-ú]{2}|^[a-zA-Z- ]{3, 20}$'),
+  username: RegExp('[A-zÀ-ú]{2}|^[a-zA-Z0-9-]{3, 20}$'),
+  age: RegExp('^[0-9]{1,3}$'),
+}
+
 // ENTER VIEW SETTINGS
 // -----------------------------------------------------------------------------------------
 exports.enterViewSetting = (req, res) => {
@@ -16,20 +24,20 @@ exports.enterViewSetting = (req, res) => {
             success: false,
             message: 'User not found',
           });
-        } else if (response[0].confirm === 1){
-          
+        } else if (response[0].confirm === 1) {
+
           res.json({
             success: true,
             message: 'Successfully fetched user data',
             user: response
           });
         } else
-        //EST CE QU'ON DECONNECTE L'UTILISATEUR SI SON COMPTE EST PAS CONFIRME ?
+          //EST CE QU'ON DECONNECTE L'UTILISATEUR SI SON COMPTE EST PAS CONFIRME ?
           res.json({
             success: false,
             message: 'error',
             user: response
-        });
+          });
       });
     } else {
       res.sendStatus(401);
@@ -44,31 +52,29 @@ exports.updateName = (req, res) => {
     res.sendStatus(500);
   } else {
     if (res) {
-      if (req.body.newFirstName || req.body.newLastName)
-      {
-        if (req.body.newFirstName && req.body.newLastName)
-        {
-          let sql = 'UPDATE user SET firstname = ?, lastname = ? WHERE id_user = ?';
-          var query = db.format(sql, [req.body.newFirstName, req.body.newLastName, req.body.idUser]);
+      if (req.body.newFirstName || req.body.newLastName) {
+        console.log('ICI');
+        if (!regex.lenght.test(req.body.newFirstName) || !regex.lenght.test(req.body.newLastName)) {
+          !regex.lenght.test(req.body.newFirstName) ? res.json({ message: 'firstname', success: false }) : res.json({ message: 'lastname', success: false });
         }
-        else if (req.body.newFirstName && !req.body.newLastName)
-        {
+        else if (req.body.newFirstName && !req.body.newLastName) {
           let sql = 'UPDATE user SET firstname = ? WHERE id_user = ?';
           var query = db.format(sql, [req.body.newFirstName, req.body.idUser]);
-        } else if (req.body.newLastName && !req.body.newFirstName)
-        {
+        }
+        else if (req.body.newLastName && !req.body.newFirstName) {
           let sql = 'UPDATE user SET lastname = ? WHERE id_user = ?';
           var query = db.format(sql, [req.body.newLastName, req.body.idUser]);
         }
-        db.query(query, (err, response) => {
-          if (err) {
-            console.log(err);
-          }
-          res.json({
-            message: 'success',
-            success: true,
+        else  {
+          let sql = 'UPDATE user SET firstname = ?, lastname = ? WHERE id_user = ?';
+          var query = db.format(sql, [req.body.newFirstName, req.body.newLastName, req.body.idUser]);
+          db.query(query, (err, response) => {
+            res.json({
+              message: 'success',
+              success: true,
+            });
           });
-        });
+        }
       } else {
         res.json({
           message: 'error',
@@ -104,7 +110,7 @@ exports.updateEmail = (req, res) => {
         ]);
         db.query(query, (err, response) => {
           if (err) {
-            if (err.code === 'ER_DUP_ENTRY'){
+            if (err.code === 'ER_DUP_ENTRY') {
               res.json({
                 message: 'emailTaken',
                 success: false,
@@ -117,11 +123,11 @@ exports.updateEmail = (req, res) => {
             }
           }
           else {
-          res.json({
-            message: 'success',
-            success: true,
-          });
-        }
+            res.json({
+              message: 'success',
+              success: true,
+            });
+          }
         });
       } else {
         res.json({
