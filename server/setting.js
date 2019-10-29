@@ -53,7 +53,6 @@ exports.updateName = (req, res) => {
   } else {
     if (res) {
       if (req.body.newFirstName || req.body.newLastName) {
-        console.log('ICI');
         if (!regex.lenght.test(req.body.newFirstName) || !regex.lenght.test(req.body.newLastName)) {
           !regex.lenght.test(req.body.newFirstName) ? res.json({ message: 'firstname', success: false }) : res.json({ message: 'lastname', success: false });
         }
