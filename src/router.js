@@ -58,6 +58,11 @@ export default new Router({
           component: () => import('./views/GetMatch.vue')
         },
         {
+          path: '/matchs',
+          name: 'matchs',
+          component: () => import('./views/Matchs.vue')
+        },
+        {
           path: '*',
           name: 'getmatch',
           // route level code-splitting

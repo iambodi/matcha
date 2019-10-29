@@ -54,10 +54,11 @@ export default {
             logged: true,
             id: localStorage.getItem('id'),
             links: [
-                { icon: 'mdi-account-search-outline', text: 'Search users', route: '/search' },
+                { icon: 'mdi-account-heart-outline', text: 'My matchs', route: '/matchs' },
+                { icon: 'mdi-magnify', text: 'Search users', route: '/search' },
                 { icon: 'mdi-account-card-details-outline', text: 'Get Suggestion', route: '/getMatch' },
                 { icon: 'mdi-account-circle-outline', text: 'About you', route: '/about' },
-                { icon: 'mdi-account-heart-outline', text: 'Looking for', route: '/lookingfor' },
+                { icon: 'mdi-account-search-outline', text: 'Looking for', route: '/lookingfor' },
                 { icon: 'mdi-information-outline', text: 'Personal informations', route: '/info' },
             ],
         }

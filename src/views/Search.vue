@@ -8,7 +8,7 @@
     <UserCard v-for="(user, i) in displayedUsers" :key="i" :user="user"/>
   </v-col>
 </template>
-// STILL HAVE TO FILTER FROM TAGS
+// STILL HAVE TO FILTER FROM TAGS AND MATCH WITH boblebricoleur qui aime les hommes (voir si la distance est pas trop loin)
 
 <script>
 import SearchFilters from "../components/SearchFilters";
@@ -45,7 +45,6 @@ export default {
       {
         for (let i = 0; i < this.users.length; i++)
         {
-          if (this.users[i].interest === "Both" || this.users[i].interest === params.gender)
             if (this.users[i].age >= params.minage && this.users[i].age <= params.maxage)
               if (this.users[i].popularity >= params.pop)
                 if (this.users[i].dist <= params.distance)
@@ -56,7 +55,7 @@ export default {
       {
         for (let i = 0; i < this.users.length; i++)
         {
-          if (params.interests === this.users[i].gender && (this.users[i].interest === "Both" || this.users[i].interest === params.gender))
+          if (params.interests === this.users[i].gender)
             if (this.users[i].age >= params.minage && this.users[i].age <= params.maxage)
               if (this.users[i].popularity >= params.pop)
                 if (this.users[i].dist <= params.distance)

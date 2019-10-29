@@ -4,7 +4,6 @@
   </v-container>
   <v-container v-else>
     <Navbar v-on:loggingOutSuccess="loggedOut"/>
-    <Navbar />
     <router-view v-on:alertMsg="fireAlert"></router-view>
   </v-container>
 </template>
@@ -61,9 +60,10 @@ export default {
               longitude: jsonres.lon,
             })
           }
-          else {
-            this.$emit("alertMsg", 'fail', "couldn't join the tracking api") // jarrive pas a lancer ca
-          }
+          // else {
+          //   console.log()
+          //   this.$emit("alertMsg", 'fail', "couldn't join the tracking api") // jarrive pas a lancer ca
+          // }
         }
         invocation.send();
       }

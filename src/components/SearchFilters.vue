@@ -14,6 +14,8 @@
       <v-subheader>Distance</v-subheader>
       <v-card-text>
         <v-slider
+          min="0"
+          max="1000"
           v-model="distance"
           track-color="grey"
           thumb-color="deep-orange"
@@ -34,7 +36,7 @@
       </v-card-text>
       <v-subheader>Popularity</v-subheader>
       <v-card-text>
-        <v-slider v-model="pop" thumb-label="always" track-color="grey"></v-slider>
+        <v-slider v-model="pop" thumb-label="always" track-fill-color="grey" track-color="blue darken-2"></v-slider>
       </v-card-text>
 
       <v-divider></v-divider>

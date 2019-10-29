@@ -14,6 +14,8 @@
       <v-subheader>Distance</v-subheader>
       <v-card-text>
         <v-slider
+          min="0"
+          max="1000"
           v-model="distance"
           track-color="grey"
           thumb-color="deep-orange"

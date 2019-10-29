@@ -10,7 +10,7 @@ http3.listen(5000, function() {
 io.sockets.on('connection', function(socket) {
     console.log('Made socket connection', socket.id);
     socket.on('notification', (obj) => {
-        io.emit('MESSAGE', obj)
+        socket.emit('MESSAGE', obj)
         console.log(obj);
     });
 });

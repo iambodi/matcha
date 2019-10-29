@@ -86,7 +86,10 @@ export default {
           userId: this.id,
           online: 1,
           });
-      }
+        }
+        else {
+        this.$emit('alertMsg', "fail", res.data.message)
+        }
       } catch (error) {
         this.$emit('alertMsg', "fail", "Error, please retry");
       }
