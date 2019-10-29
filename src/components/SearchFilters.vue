@@ -11,6 +11,15 @@
         ></v-select>
       </v-card-text>
 
+      <v-card-text>
+        <v-select
+          v-model="interestsAttirance"
+          :items="itemsInterested"
+          :menu-props="{ top: true, offsetY: true }"
+          label="Who are interrested in"
+        ></v-select>
+      </v-card-text>
+
       <v-subheader>Distance</v-subheader>
       <v-card-text>
         <v-slider
@@ -57,7 +66,50 @@
                 </v-chip>
                 </v-chip-group>
         </v-card-text>
-            <v-btn class="mb-4" @click="applyFilters">Apply Filters</v-btn>
+      <v-divider></v-divider>
+    
+      <v-row
+        class="px-2 ma-2"
+        justify="space-between"
+      >
+        <v-btn-toggle
+          v-model="sortType"
+        >
+          <v-btn color="white">
+            <v-icon>mdi-sort-alphabetical</v-icon>
+          </v-btn>
+  
+          <v-btn color="white">
+            <v-icon>mdi-cake-variant</v-icon>
+          </v-btn>
+  
+          <v-btn color="white">
+            <v-icon>mdi-car-side</v-icon>
+          </v-btn>
+  
+          <v-btn color="white">
+              <v-icon class="cols 12">mdi-star-outline</v-icon>
+          </v-btn>
+        </v-btn-toggle>
+   
+        <v-btn-toggle v-model="sortOrder">
+          <v-btn color="white">
+            <v-icon>mdi-sort-ascending</v-icon>
+          </v-btn>
+  
+          <v-btn color="white">
+            <v-icon>mdi-sort-descending</v-icon>
+          </v-btn>
+        </v-btn-toggle>
+      </v-row>
+
+      <v-divider></v-divider>
+        <v-row
+        class="ma-2"
+        justify="center"
+        >
+            <v-btn class="mb-2" block @click="applyFilters">Apply Filters</v-btn>
+        </v-row>
     </v-card>
   </div>
 </template>
@@ -65,8 +117,11 @@
 export default {
   data() {
     return {
+      sortType: "",
+      sortOrder: "",
       gender: "",
       interests: "Both",
+      interestsAttirance: "Both",
       distance: 0,
       pop: 0,
       id: localStorage.getItem("id"),
@@ -80,6 +135,7 @@ export default {
       ],
       agerange: [18, 99],
       items: ["Male", "Female", "Both"],
+      itemsInterested:["Male", "Female", "Both", "Whatever"],
       selectedNumber: [],
       selected: []
     };
@@ -104,12 +160,18 @@ export default {
         {
             gender:this.gender,
             interests:this.interests,
+            interestsAttirance:this.interestsAttirance,
             distance:this.distance,
             pop:this.pop,
             minage:this.agerange[0],
             maxage:this.agerange[1],
             tags:this.selected,
         })
+        if (this.sortType !== "" && this.sortOrder !== "")
+          this.$emit('applyOrder', {
+            type: this.sortType,
+            order: this.sortOrder,
+          })
     },
     async getPrefs() {
       try {
@@ -150,6 +212,7 @@ export default {
         minage: this.agerange[0],
         maxage: this.agerange[1],
         pop: this.pop,
+        tags:this.selected,
       });
     }
   }

@@ -36,7 +36,7 @@
       </v-card-text>
       <v-subheader>Popularity</v-subheader>
       <v-card-text>
-        <v-slider v-model="pop" thumb-label="always" track-color="grey"></v-slider>
+        <v-slider v-model="pop" thumb-label="always" track-fill-color="grey" track-color="blue darken-2"></v-slider>
       </v-card-text>
       <v-btn class="mb-4" @click="updatePrefs">Update Prefs</v-btn>
     </v-card>
