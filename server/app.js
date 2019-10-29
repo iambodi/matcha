@@ -77,7 +77,7 @@ app.post('/swipe/', urlencodedParser, checkUserToken, home.swipe);
 app.post('/getAllUsers/', urlencodedParser, checkUserToken, home.getAllUsers);
 
 
-// app.post('/saveMessage', urlencodedParser, checkUserToken, chat.saveMessage);
+app.post('/saveMessage', urlencodedParser, checkUserToken, chat.saveMessage);
 
 app.post('/getUserOnline', urlencodedParser, checkUserToken, home.getUserOnline);
 app.post('/saveLastConnection', urlencodedParser, checkUserToken, home.saveUserLastConnection);
@@ -91,8 +91,8 @@ app.get('/activateAccount/:email', urlencodedParser, activate.activateAccount);
 app.get('/home/:id', urlencodedParser, checkUserToken, home.enterViewHome);
 app.get('/getUserPhotos/:id', urlencodedParser, checkUserToken, user.getUserPhotos);
 
-// app.get('/chat/:id', urlencodedParser, checkUserToken, chat.loadMatches);
-// app.get('/loadConversation/:id', urlencodedParser, checkUserToken, chat.loadConversation);
+app.get('/chat/:id', urlencodedParser, checkUserToken, chat.loadMatches);
+app.get('/loadConversation/:id', urlencodedParser, checkUserToken, chat.loadConversation);
 
 app.get('/getTags', urlencodedParser, checkUserToken, preference.getTags);
 app.get('/getUserTags/:id', urlencodedParser, checkUserToken, user.getUserTags);

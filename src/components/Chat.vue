@@ -39,11 +39,11 @@ export default {
       socket: io("localhost:5000")
     };
   },
-  mounted() {
-        this.socket.on('MESSAGE', (data) => {
-            this.messages = [...this.messages, data];
-        });
-    },
+//   mounted() {
+//         this.socket.on('MESSAGE', (data) => {
+//             this.messages = [...this.messages, data];
+//         });
+//     },
   methods: {
     sendMessage(e) {
       e.preventDefault();

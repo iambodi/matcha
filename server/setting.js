@@ -92,16 +92,20 @@ exports.updateEmail = (req, res) => {
   if (!req.body) {
     res.sendStatus(500);
   } else {
-    if (res) {
+    console.log(req.body.newEmail);
+    console.log(regex.mail.test(req.body.newEmail));
+    if (!regex.mail.test(req.body.newEmail)) {
+      console.log('LOL2');
+
+          res.json({ message: 'regexMail', success: false });
+        }
+    else if (res) {
       if (req.body.newEmail) {
-
-
+        console.log('LOL');
         let checkMail = 'SELECT email FROM user WHERE email = ?';
         let queryMAil = db.format(checkMail, [
           req.body.newEmail
         ]);
-
-
         let sql = 'UPDATE user SET email = ? WHERE id_user = ?';
         let query = db.format(sql, [
           req.body.newEmail,
@@ -109,6 +113,8 @@ exports.updateEmail = (req, res) => {
         ]);
         db.query(query, (err, response) => {
           if (err) {
+        console.log('LOL1');
+
             if (err.code === 'ER_DUP_ENTRY') {
               res.json({
                 message: 'emailTaken',
@@ -122,6 +128,8 @@ exports.updateEmail = (req, res) => {
             }
           }
           else {
+        console.log('LOL3');
+
             res.json({
               message: 'success',
               success: true,
@@ -129,6 +137,8 @@ exports.updateEmail = (req, res) => {
           }
         });
       } else {
+        console.log('LOL4');
+
         res.json({
           message: 'error',
           success: false,

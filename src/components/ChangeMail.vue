@@ -48,11 +48,14 @@
             if (res.data.message === 'error') {
                 this.$emit('alertMsg', "fail", "Failed to update email, please retry");
             }
+            else if (res.data.message === 'regexMail') {
+                this.$emit('alertMsg', "fail", "Email: xxxx@xxxxx.xx");
+            }
             else if (res.data.message === 'emailTaken') {
                 this.$emit('alertMsg', "fail", "This email is already used");
             }
             else if (res.data.message === 'success') {
-                this.$emit('alertMsg', "fail", "Email modified");
+                this.$emit('alertMsg', "success", "Email modified");
             }
             else {
                 this.$emit('alertMsg', "fail", "Please retry");
