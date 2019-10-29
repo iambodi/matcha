@@ -24,7 +24,7 @@
     export default {
         data() {
             return {
-                id: "2932",
+                id: localStorage.getItem("id"),
                 tags: ['Netflix & chill', 'Athletic', 'Gastronomy', 'Nature lovers', 'Nightlife', 'Adventurer'],
                 selectedNumber: [],
                 selected : [],

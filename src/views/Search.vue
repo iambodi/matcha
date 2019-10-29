@@ -1,9 +1,7 @@
 <template>
   <v-col>
     <v-row justify="center">
-      <SearchFilters v-on:applyFilters="filterResult"/>
-      <v-btn @click="displayUsers">display users</v-btn>
-        <v-btn @click="displayMe">display me</v-btn>
+      <SearchFilters v-on:applyFilters="filterResult" v-on:applyOrder="sortResult"/>
     </v-row>
     <UserCard v-for="(user, i) in displayedUsers" :key="i" :user="user"/>
   </v-col>
@@ -39,39 +37,63 @@ export default {
     this.displayedUsers = this.users;
   },
   methods: {
+    sortResult(params){
+      let order = params.order === 0 ? 'asc' : 'desc';
+      let key = "";
+      if (params.type === 0)
+        key = "firstname" // voir si je met pas le pseudo
+      else if (params.type === 1)
+        key = "age"
+      else if (params.type === 2)
+        key = "dist"
+      else if (params.type === 3)
+        key = "popularity"
+      else
+        key = "firstname"
+      this.displayedUsers.sort(this.compareValues(key, order))
+    },
+    compareValues(key, order='asc') {
+  return function(a, b) {
+    if(!a.hasOwnProperty(key) || 
+       !b.hasOwnProperty(key)) {
+  	  return 0; 
+    }
+    
+    const varA = (typeof a[key] === 'string') ? 
+      a[key].toUpperCase() : a[key];
+    const varB = (typeof b[key] === 'string') ? 
+      b[key].toUpperCase() : b[key];
+      
+    let comparison = 0;
+    if (varA > varB) {
+      comparison = 1;
+    } else if (varA < varB) {
+      comparison = -1;
+    }
+    return (
+      (order == 'desc') ? 
+      (comparison * -1) : comparison
+    );
+  };
+},
     filterResult(params) {
       this.displayedUsers = [];
-      if (params.interests == "Both")
-      {
         for (let i = 0; i < this.users.length; i++)
         {
-            if (this.users[i].age >= params.minage && this.users[i].age <= params.maxage)
-              if (this.users[i].popularity >= params.pop)
-                if (this.users[i].dist <= params.distance)
-                  this.displayedUsers.push(this.users[i]); // rajouter le filtre de km
+          if (params.interests === "Both" || (params.interests === this.users[i].gender))
+            if (params.interestsAttirance === "Whatever" || params.interestsAttirance === this.users[i].interest)
+              if (this.users[i].age >= params.minage && this.users[i].age <= params.maxage)
+                if (this.users[i].popularity >= params.pop)
+                  if (this.users[i].dist <= params.distance){
+                    let checker = (arr, target) => target.every(v => arr.includes(v));
+                      if (params.tags.length === 0 || checker(this.users[i].tags, params.tags))
+                        this.displayedUsers.push(this.users[i]);
+                  }
         }
-      }
-      else
-      {
-        for (let i = 0; i < this.users.length; i++)
-        {
-          if (params.interests === this.users[i].gender)
-            if (this.users[i].age >= params.minage && this.users[i].age <= params.maxage)
-              if (this.users[i].popularity >= params.pop)
-                if (this.users[i].dist <= params.distance)
-                  this.displayedUsers.push(this.users[i]); // rajouter le filtre de km
-        }
-      }
   //    console.log(params);
     },
     fireAlert(state, message) {
       this.$emit("alertMsg", state, message);
-    },
-    displayUsers() {
-      console.log(this.users);
-    },
-    displayMe() {
-      console.log({id:this.id, gender:this.gender, interests:this.interests, distance:this.distance, pop:this.pop, lat:this.lat, long:this.long});
     },
     async getAllUsers() {
       try {
@@ -81,6 +103,7 @@ export default {
         this.users = res.data.people_list;
         this.calculateAge();
         this.calculateDist();
+        this.setTags();
       } catch (err) {
         this.$emit("alertMsg", "fail", "Couldn't retrieve list of users");
       }
@@ -94,6 +117,22 @@ export default {
         age--;
       }
       return age;
+    },
+    setTags(){
+      let tagNames = [
+        "Netflix & chill",
+        "Athletic",
+        "Gastronomy",
+        "Nature lovers",
+        "Nightlife",
+        "Adventurer"
+      ];
+      for (let i = 0; i < this.users.length; i++)  {
+        this.users[i].tags = JSON.parse(this.users[i].tags);
+        for (let j = 0; j < this.users[i].tags.length; j++) {
+          this.users[i].tags[j] = tagNames[(this.users[i].tags[j] - 1)];
+        }
+      }
     },
     calculateAge() {
       for (let i = 0; i < this.users.length; i++) {
