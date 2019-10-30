@@ -2,7 +2,7 @@
   <v-card class="d-inline-block mx-auto">
       
     <v-container>
-       <div class="overline mb-0">{{user.firstname}} {{user.lastname}}</div>
+       <div class="overline mb-0">{{user.username}}</div>
       <v-row justify="space-between">
         <v-col cols="auto">
           <v-img
@@ -10,6 +10,7 @@
             width="150"
             :src="user.photo"
           >
+       <div v-if="user.online===1" class="overline mb-0"><v-icon color="green">mdi-access-point</v-icon></div>
         </v-img>
         </v-col>
 
@@ -51,7 +52,7 @@
             }
         },
         mounted (){
-        //    console.log(this.user);
+            // console.log(this.user);
         },
         methods: {
 

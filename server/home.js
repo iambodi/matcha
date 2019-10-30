@@ -329,7 +329,7 @@ exports.getAllUsers = (req, res) => {
         // sql = 'SELECT user.id_user, firstname, lastname, gender, birthdate, interest, bio, popularity, online, last_connected, popularity, position, photo FROM user INNER JOIN photo ON user.id_user = photo.id_user \
         // WHERE NOT EXISTS(SELECT null FROM swipe WHERE user.id_user = swipe.id_user_matched)  \
         // AND user.id_user != ?'; // psenser a ne pas renvoyer les users bloques et ca renvoie 3 fois 2932 si on est pas le 2932 ...
-        sql = 'SELECT user.id_user, firstname, lastname, gender, birthdate, interest, bio, popularity, online, last_connected, popularity, position, photo, JSON_ARRAYAGG(id_tag) AS tags FROM user INNER JOIN photo ON user.id_user = photo.id_user INNER JOIN usertag on user.id_user = usertag.id_user WHERE NOT EXISTS(SELECT null FROM swipe WHERE user.id_user = swipe.id_user_matched) AND user.id_user != 2932 GROUP BY user.id_user, firstname, lastname, gender, birthdate, interest, bio, popularity, online, last_connected, popularity, position, photo'
+        sql = 'SELECT user.id_user, firstname, lastname, username, gender, birthdate, interest, bio, popularity, online, last_connected, popularity, position, photo, JSON_ARRAYAGG(id_tag) AS tags FROM user INNER JOIN photo ON user.id_user = photo.id_user INNER JOIN usertag on user.id_user = usertag.id_user WHERE NOT EXISTS(SELECT null FROM swipe WHERE user.id_user = swipe.id_user_matched) AND user.id_user != 2932 GROUP BY user.id_user, firstname, lastname, gender, birthdate, interest, bio, popularity, online, last_connected, popularity, position, photo'
         query = db.format(sql, [
           req.body.id,
         ]);

@@ -108,6 +108,15 @@
         class="ma-2"
         justify="center"
         >
+<input type="checkbox" id="checkbox" v-model="onlyShowOnline">
+<label for="checkbox">{{ "Only Show online users" }}</label>
+
+        </v-row>
+      <v-divider></v-divider>
+        <v-row
+        class="ma-2"
+        justify="center"
+        >
             <v-btn class="mb-2" block @click="applyFilters">Apply Filters</v-btn>
         </v-row>
     </v-card>
@@ -137,7 +146,8 @@ export default {
       items: ["Male", "Female", "Both"],
       itemsInterested:["Male", "Female", "Both", "Whatever"],
       selectedNumber: [],
-      selected: []
+      selected: [],
+      onlyShowOnline: false,
     };
   },
   mounted() {
@@ -166,6 +176,7 @@ export default {
             minage:this.agerange[0],
             maxage:this.agerange[1],
             tags:this.selected,
+            onlyShowOnline:this.onlyShowOnline,
         })
         if (this.sortType !== "" && this.sortOrder !== "")
           this.$emit('applyOrder', {
