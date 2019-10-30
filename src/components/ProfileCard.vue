@@ -11,7 +11,7 @@
         <v-img
           height="300"
           width="300"
-          src="https://dq1eylutsoz4u.cloudfront.net/2019/03/18155614/conversation-starters-for-dating-600x460.jpg"
+          :src="user.photo"
         ></v-img>
         <v-divider></v-divider>
         <v-row class="pa-0 ml-3 mt-3">
@@ -36,22 +36,24 @@
             </v-btn>
           </v-layout>
         <v-row class="px-5">  
-        <v-subheader class="display-1 pr-6">Camille</v-subheader>
+        <v-subheader class="display-1 pr-6">{{user.username}}</v-subheader>
+                </v-row>
+                <v-row class="px-5">  
           <v-icon small>mdi-cake-variant</v-icon>
         <v-subheader class="subtitle-2 pl-0">
-          25 ans</v-subheader>
+          {{user.age}} ans</v-subheader>
           <v-icon >mdi-car-side</v-icon>
         <v-subheader class="subtitle-2 pl-0">
-          12km
+           {{user.dist.toFixed(0)}} km
         </v-subheader>
           <v-icon small >mdi-star-outline</v-icon>
         <v-subheader class="subtitle-2 pl-0">
-          34%
+          {{user.popularity.toFixed(0)}} %
         </v-subheader>
         </v-row>
         <v-col cols="12">
           <v-text-field
-            value="hello"
+            :value="user.bio"
             label="Bio"
             outlined
             readonly
@@ -63,12 +65,17 @@
         active-class="deep-orange lighten-1 white--text"
         column
         multiple
+        v-model="selected"
       >
       <v-chip
         v-for="(tag, i) in tags" 
         :key="i"
-       > {{ tag }}
+        > {{ tag }}
         </v-chip>
+        <!-- 
+            PUTAIN DE CHIP QU'ON PEUT TOUJOURS MODIFIER 
+            STILL HAVE TO HANDLE THE REPORT LIKE AND DISLIKE BUTTON
+        -->
       </v-chip-group>
       </v-col>
       </v-col>
@@ -80,10 +87,9 @@
 
 
 <script>
-import Register from '../components/Register';
-import Login from '../components/Login';
 
 export default {
+
   data () {
     return {
       id: localStorage.getItem('id'),
@@ -98,29 +104,22 @@ export default {
       elevation: undefined,
       raised: false,
       tags: ['Netflix & chill', 'Adventurer', 'Athletic', 'Gastronomy', 'Nature lovers', 'Nightlife', 'Romantic', 'Gamer'],
-      selected : [],
+      selected : [3],
     }
   },
+  props: {
+      user: Object,
+  },
   mounted () {
+      console.log(this.user)
+      for (let i = 0; i < this.user.tags.length; i++) {
+          this.selected.push(this.tags.indexOf(this.user.tags[i]))
+      }
 
   },
   components: {
-    Register,
-    Login
   },
   computed: {
-    getUser : async function () {
-      try {
-        console.log(this.logged);
-        const res = await axios.get("http://localhost:8001/home/" + this.id, {
-        });
-        if (res.data.success === true) {
-          this.logged = true;
-        }               
-      } catch (error) {
-     //   this.resText = 'Error, please retry';
-      }
-    },
   }
 };
 </script>

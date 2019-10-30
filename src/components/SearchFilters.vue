@@ -109,7 +109,7 @@
         justify="center"
         >
 <input type="checkbox" id="checkbox" v-model="onlyShowOnline">
-<label for="checkbox">{{ "Only Show online users" }}</label>
+<label for="checkbox">Only Show online users</label>
 
         </v-row>
       <v-divider></v-divider>

@@ -1,6 +1,12 @@
 <template>
-  <v-card class="d-inline-block mx-auto">
-      
+  <v-card @click.stop="dialog=true" class="d-inline-block mx-auto">
+          <v-dialog
+      v-model="dialog"
+      max-width="800"
+    >
+      <ProfileCard :user="user"/>
+    </v-dialog>
+
     <v-container>
        <div class="overline mb-0">{{user.username}}</div>
       <v-row justify="space-between">
@@ -42,12 +48,17 @@
 </template>
 
 <script>
+import ProfileCard from "./ProfileCard"
     export default {
+      components :{
+        ProfileCard,
+      },
         props: {
             user: Object,
         },
         data() {
             return {
+              dialog: false,
 
             }
         },

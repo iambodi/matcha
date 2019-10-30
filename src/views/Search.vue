@@ -76,7 +76,7 @@ export default {
   };
 },
     filterResult(params) {
-      console.log(params)
+      //console.log(params)
       this.displayedUsers = [];
         for (let i = 0; i < this.users.length; i++)
         {
