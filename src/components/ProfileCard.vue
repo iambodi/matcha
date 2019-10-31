@@ -93,7 +93,7 @@ export default {
 
   data () {
     return {
-      id: localStorage.getItem('id'),
+      id: parseInt(localStorage.getItem('id')),
       register: false,
       login: false,
       logged: false,
@@ -119,20 +119,43 @@ export default {
 
   },
   methods: {
-      likeUser(user)
+      async likeUser(user)
       {
-        console.log(this.id, "wants to like ", user) // ca get le user id qu'on veut dislike
+        const res = await axios.post("http://localhost:8001/swipe/", {
+          id_user: this.id,
+          id_user_: user,
+          like: 1,
+        });
+        console.log(res)
+        if (res.data.match === true)
+          this.$emit('alertMsg', "success", "you matched !")
+        else
+          this.$emit('alertMsg', "fail", "you didn't match !")
+        // console.log(res)
+        // console.log("i liked");
+        // console.log(this.id, "wants to like ", user) // ca get le user id qu'on veut dislike
         this.$emit('deleteUser', user);
       },
       dislikeUser(user)
       {
-        console.log(this.id, "wants to dislike ", user)
+        axios.post("http://localhost:8001/swipe/", {
+          id_user: this.id,
+          id_user_: user,
+          like: 0
+        });
+        // console.log(this.id, "wants to dislike ", user)
         this.$emit('deleteUser', user);
+        this.$emit('alertMsg', "success", "Succesfully disliked user !")
       },
       reportUser(user)
       {
-        console.log(this.id, "wants to report ", user)
+        axios.post("http://localhost:8001/reportUserNotMatched", {
+          id_user_: user,
+          id_user: this.id,
+        });
+        // console.log(this.id, "wants to report ", user)
         this.$emit('deleteUser', user);
+        this.$emit('alertMsg', "success", "succesflly reported user !")
       }
   },
   components: {

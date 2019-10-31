@@ -8,6 +8,7 @@
       :key="i"
       :user="user"
       v-on:deleteUser="deleteUser"
+      v-on:alertMsg="alertMsg"
     />
   </v-col>
 </template>
@@ -38,7 +39,7 @@ export default {
   async created() {
     await this.getPrefs();
     await this.getAllUsers();
-    this.displayedUsers = this.users;
+    // this.displayedUsers = this.users;
   },
   methods: {
     sortResult(params) {
@@ -71,8 +72,8 @@ export default {
       };
     },
     filterResult(params) {
-      //console.log(params)
       this.displayedUsers = [];
+      //console.log(params)
       for (let i = 0; i < this.users.length; i++) {
         if (
           params.interests === "Both" ||
@@ -102,8 +103,7 @@ export default {
                       this.displayedUsers.push(this.users[i]);
                 }
       }
-      //      console.log(this.displayedUsers)
-      //    console.log(params);
+      console.log(this.displayedUsers)
     },
     fireAlert(state, message) {
       this.$emit("alertMsg", state, message);
@@ -154,16 +154,23 @@ export default {
         this.users[i].age = this.getAge(date);
       }
     },
+    alertMsg(param1, msg)
+    {
+      this.$emit('alertMsg', param1, msg);
+    },
     deleteUser(user) {
       for (let i = 0; i < this.users.length; i++) {
         if (this.users[i].id_user === user) {
-          console.log(this.users.splice(i, 1));
+          this.users.splice(i, 1);
         }
       }
+      this.displayedUsers = this.displayedUsers.filter(function(value, index, arr, user){
+        return value.id_user !== user;
+      })
       for (let i = 0; i < this.displayedUsers.length; i++) {
-        if (this.displayedUsers[i].id_user === user) {
-          console.log(this.displayedUsers.splice(i, 1));
-        }
+        if (this.displayedUsers[i].id_user !== user) {
+           this.displayedUsers.splice(i, 1);
+         }
       }
     },
     calculateDist() {

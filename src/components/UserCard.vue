@@ -4,7 +4,7 @@
       v-model="dialog"
       max-width="800"
     >
-      <ProfileCard :user="user" v-on:deleteUser="deleteUser"/>
+      <ProfileCard :user="user" v-on:deleteUser="deleteUser" v-on:alertMsg="alertMsg"/>
     </v-dialog>
 
     <v-container>
@@ -69,7 +69,10 @@ import ProfileCard from "./ProfileCard"
           deleteUser(user) {
             this.dialog = false;
             this.$emit("deleteUser", user)
-          }
+          },
+          alertMsg(param1, msg) {
+            this.$emit("alertMsg", param1, msg)
+          },
         },
     }
 </script>
