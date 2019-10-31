@@ -33,12 +33,16 @@
       </v-card>
     </v-col>
     <Chats v-model="chat"
-      :msg="msg"/>
+    v-on:newMsg="postMsg"
+      :msg="msg"
+      :id_match="selectedId"
+      :index="selected"/>
   </v-row>
 </template>
 
 <script>
 import Chats from "../components/Chats";
+import io from "socket.io-client";
 
 export default {
   data() {
@@ -56,24 +60,50 @@ export default {
       items: [{ header: "Your last interractions" }],
       matchs: [],
       selected: -1,
+      socket: io("localhost:3000"),
+      selectedId: -1,
     };
   },
-  mounted() {
-    this.getMatch();
+  async created() {
+    await this.getMatch();
+    this.joinRooms();
+    this.socket.on("receive message", data => {
+    //   this.msg = [...this.text, data];
+    for (var i = 0; i < this.matchs.length; i++) {
+        if (this.matchs[i].id_match === data.id_match)
+            break;
+    }
+        if (this.matchs.length !== 0) {
+            this.matchs[i].message.push(data)
+        }
+    });
   },
   components: {
     Chats
   },
   methods: {
+      joinRooms () {
+        for (let i = 0; i < this.matchs.length; i++){
+        this.socket.emit('join room', this.matchs[i].id_match)
+        }
+      },
+      postMsg(id_match, obj) {
+          this.socket.emit('send message', obj)
+   //       this.addMsg(id_match, obj)
+      },
+      addMsg (id_match, obj){
+          this.matchs[id_match].message.push(obj);
+      },
       select(index)
       {
         //   console.log(index)
           this.selected = index;
           this.msg = this.matchs[this.selected].message;
+          this.selectedId = this.matchs[this.selected].id_match;
        //   console.log(this.msg)
       },
     async getMatch() {
-        console.log("MATCHS :", this.matchs)
+        // console.log("MATCHS :", this.matchs)
       try {
         const res = await axios.get("http://localhost:8001/chat/" + this.id, {});
         this.matchs.push(...res.data.matches_list)
