@@ -293,7 +293,9 @@ exports.getProfilePhoto = (req, res) => {
     res.sendStatus(500);
   } else {
     if (res) {
-      const sql = 'SELECT photo FROM photo WHERE id_user = ? AND active = 1';
+      const sql = 'SELECT photo FROM photo WHERE id_user = ?';
+      // const sql = 'SELECT photo FROM photo WHERE id_user = ? AND active = 1';
+      //regarder a quoi se rapporte "active", la requete ne foncitonne pas avec...
       let query = db.format(sql, [req.params.id]);
       db.query(query, (err, response) => {
         if (err) {
