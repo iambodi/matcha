@@ -5,6 +5,7 @@
       <v-form>
         <v-row>
           <v-col cols="12">
+            <p v-for="(mess, i) in msg">{{mess.message}}</p>
             <v-text-field
               v-model="text"
               :append-outer-icon="'mdi-send'"
@@ -27,7 +28,7 @@
 export default {
   data() {
     return {
-    //   show: false,
+      //   show: false,
       text: "Hey!",
       marker: true
     };
@@ -37,6 +38,9 @@ export default {
 //             this.messages = [...this.messages, data];
 //         });
 //     },
+ props : {
+      msg: Array,
+  },
   methods: {
     clearMessage() {
       this.message = "";
@@ -45,6 +49,10 @@ export default {
       this.resetIcon();
       this.clearMessage();
     },
+  },
+  mounted () {
+    //   console.log("chat's matchs:", this.matchs);
+    console.log(this.msg);
   },
    computed: {
     show: {
