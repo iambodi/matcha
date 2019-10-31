@@ -9,6 +9,7 @@
       :user="user"
       v-on:deleteUser="deleteUser"
       v-on:alertMsg="alertMsg"
+      :socket="socket"
     />
   </v-col>
 </template>
@@ -18,6 +19,9 @@ import SearchFilters from "../components/SearchFilters";
 import UserCard from "../components/UserCard";
 
 export default {
+  props: {
+    socket: Object,
+  },
   components: {
     SearchFilters,
     UserCard

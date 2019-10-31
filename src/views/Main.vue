@@ -4,7 +4,7 @@
   </v-container>
   <v-container v-else>
     <Navbar v-on:loggingOutSuccess="loggedOut"/>
-    <router-view v-on:alertMsg="fireAlert"></router-view>
+    <router-view v-on:alertMsg="fireAlert" :socket="socket"></router-view>
   </v-container>
 </template>
 
@@ -32,11 +32,17 @@ export default {
         "Nightlife",
       ],
       selected: [],
-      // socket: io("localhost:5000")
+      socket: io("localhost:3000"),
     };
   },
   created () {
     document.addEventListener('beforeunload', this.loggedOut);
+    this.socket.on("receive notif", (data) => {
+      console.log(data) // ici on recoit le type de notif et de qui
+    });
+    // on login recieve notifs, on click on notif, delete notifs, on recieve notif, pull l'api
+  },
+  mounted () {
   },
   components: {
     Register,
@@ -85,6 +91,8 @@ export default {
           this.getGeolocFromIP(userId)
         );
       }
+      let value = userId+"_user"
+      this.socket.emit('join userroom', value)
     },
     loggedOut()
     {

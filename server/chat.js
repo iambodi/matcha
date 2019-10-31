@@ -8,7 +8,6 @@ http2.listen(3000, function () {
 });
 
 io.sockets.on('connection', function (socket) {
-  var roomId;
   socket.on('leave room', function (room) {
     socket.leave(room);
   });
@@ -18,8 +17,17 @@ io.sockets.on('connection', function (socket) {
     roomId = room;
   });
   socket.on('send message', (obj) => {
-    io.to(roomId).emit('receive message', obj);
+    // console.log(obj)
+    io.to(obj.id_match).emit('receive message', obj);
   });
+  socket.on('send notif', (obj) => {
+    console.log(obj)
+    io.to(obj.user + "_user").emit('receive notif', obj)
+  });
+  socket.on('join userroom', (roomValue) => {
+    console.log("socket joined ", roomValue)
+    socket.join(roomValue)
+  })
 });
 
 exports.loadMatches = (req, res) => {
