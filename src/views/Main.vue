@@ -32,7 +32,7 @@ export default {
         "Nightlife",
       ],
       selected: [],
-      socket: io("localhost:5000")
+      // socket: io("localhost:5000")
     };
   },
   created () {
