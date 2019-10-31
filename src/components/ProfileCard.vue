@@ -16,13 +16,13 @@
         <v-divider></v-divider>
         <v-row class="pa-0 ml-3 mt-3">
           <v-col>
-        <v-btn icon>
+        <v-btn @click=likeUser(user.id_user) icon>
                 <v-icon color="red" x-large>mdi-heart</v-icon>
               </v-btn>
           </v-col>
           <v-col>
 
-              <v-btn icon>
+              <v-btn @click=dislikeUser(user.id_user) icon>
                 <v-icon color="blue" x-large>mdi-close-circle</v-icon>
               </v-btn>
           </v-col>
@@ -31,7 +31,7 @@
       </v-col>
       <v-col>
           <v-layout align-end justify-end>
-            <v-btn fab small icon class="white">
+            <v-btn @click=reportUser(user.id_user) fab small icon class="white">
               <v-icon>mdi-alert-octagon-outline</v-icon>
             </v-btn>
           </v-layout>
@@ -68,13 +68,14 @@
         v-model="selected"
       >
       <v-chip
+        disabled
         v-for="(tag, i) in tags" 
         :key="i"
         > {{ tag }}
         </v-chip>
         <!-- 
             PUTAIN DE CHIP QU'ON PEUT TOUJOURS MODIFIER 
-            STILL HAVE TO HANDLE THE REPORT LIKE AND DISLIKE BUTTON
+            STILL HAVE TO HANDLE THE REPORT LIKE AND
         -->
       </v-chip-group>
       </v-col>
@@ -111,11 +112,28 @@ export default {
       user: Object,
   },
   mounted () {
-      console.log(this.user)
+    // console.log(this.user)
       for (let i = 0; i < this.user.tags.length; i++) {
           this.selected.push(this.tags.indexOf(this.user.tags[i]))
       }
 
+  },
+  methods: {
+      likeUser(user)
+      {
+        console.log(this.id, "wants to like ", user) // ca get le user id qu'on veut dislike
+        this.$emit('deleteUser', user);
+      },
+      dislikeUser(user)
+      {
+        console.log(this.id, "wants to dislike ", user)
+        this.$emit('deleteUser', user);
+      },
+      reportUser(user)
+      {
+        console.log(this.id, "wants to report ", user)
+        this.$emit('deleteUser', user);
+      }
   },
   components: {
   },
