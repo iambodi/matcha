@@ -23,7 +23,7 @@
 
               <v-list-item-action>
                 <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
-                <v-btn icon>
+                <v-btn @click.stop ="dislikeUser(item)" icon>
                   <v-icon color="grey darken-1">mdi-heart-broken-outline</v-icon>
                 </v-btn>
                 <v-btn icon @click.stop="select(item.index)">
@@ -97,6 +97,17 @@ export default {
           this.socket.emit('send message', {...obj, user:this.id})
           this.socket.emit('send notif', {user: this.matchs[this.selected].id_user_matched, type:6})
           axios.post("http://localhost:8001/addNotification", {id_user:this.matchs[this.selected].id_user_matched, id_user_:this.id, notif:6})
+      },
+      async dislikeUser(item) {
+        console.log(this.matchs[item.index])
+        axios.get("http://localhost:8001/removeMatch/" + this.matchs[item.index].id_match, {})
+        this.matchs.splice(this.index, 1);
+        for (var i = 0; i < this.items.length; i++) {
+          if (this.items[i].index === item.index)
+            break;
+        }
+        this.items.splice(i, 1);
+        this.$emit('alertMsg', "success", "Succesfully disliked user !")
       },
       addMsg (id_match, obj){
           this.matchs[id_match].message.push(obj);
