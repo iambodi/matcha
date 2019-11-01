@@ -12,7 +12,9 @@
           height="300"
           width="300"
           :src="user.photo"
-        ></v-img>
+        >
+              <div v-if="user.online===1" class="overline mb-0"><v-icon color="green">mdi-access-point</v-icon></div>
+        </v-img>
         <v-divider></v-divider>
         <v-row class="pa-0 ml-3 mt-3">
           <v-col>
@@ -59,6 +61,10 @@
             readonly
           ></v-text-field>
         </v-col>
+
+          <div v-if="user.online===0" cols="12">
+            last seen: {{lastSeen}}
+          </div>
         <v-col>
       <div class="title text--primary">Tags</div>
       <v-chip-group
@@ -103,6 +109,7 @@ export default {
       actions: true,
       outlined: false,
       elevation: undefined,
+      lastSeen: "hello",
       raised: false,
       tags: ['Netflix & chill', 'Adventurer', 'Athletic', 'Gastronomy', 'Nature lovers', 'Nightlife', 'Romantic', 'Gamer'],
       selected : [3],
@@ -114,11 +121,13 @@ export default {
       user: Object,
   },
   mounted () {
-    // console.log(this.user)
+      this.lastSeen = this.user.last_connected.split("T")[0];
+      console.log(this.user)
+      if (this.user.tags) {
       for (let i = 0; i < this.user.tags.length; i++) {
           this.selected.push(this.tags.indexOf(this.user.tags[i]))
       }
-
+      }
   },
   methods: {
       async likeUser(user)

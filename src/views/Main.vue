@@ -112,8 +112,6 @@ export default {
     },
     loggedOut()
     {
-      this.id = -1;
-      this.logged = false; // penser a faire la requete qui delog et enregistre la derniere heure de connection
       axios.post("http://localhost:8001/getUserOnline", {
         userId: this.id,
         online: 0,
@@ -121,6 +119,8 @@ export default {
       axios.post("http://localhost:8001/saveLastConnection", {
         userId: this.id,
       });
+      this.id = -1;
+      this.logged = false; // penser a faire la requete qui delog et enregistre la derniere heure de connection
     },
     fireAlert(state, message) {
       this.$emit("alertMsg", state, message);

@@ -99,7 +99,7 @@ export default {
           axios.post("http://localhost:8001/addNotification", {id_user:this.matchs[this.selected].id_user_matched, id_user_:this.id, notif:6})
       },
       async dislikeUser(item) {
-        console.log(this.matchs[item.index])
+        // console.log(this.matchs[item.index])
         axios.get("http://localhost:8001/removeMatch/" + this.matchs[item.index].id_match, {})
         this.matchs.splice(this.index, 1);
         for (var i = 0; i < this.items.length; i++) {
@@ -142,7 +142,7 @@ export default {
               "http://localhost:8001/setting/" + id_user_matched, {} );
               var myDate = new Date(res.data.user[0].last_connected);
               myDate = myDate.getMonth() + myDate.getDate();
-              console.log(myDate)
+              // console.log(myDate)
             this.action = res.data.user[0].last_connected;
             this.name = res.data.user[0].firstname + " " + res.data.user[0].lastname;
             this.items.push({ divider: true, inset: true });

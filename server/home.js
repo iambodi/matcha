@@ -63,11 +63,17 @@ exports.getUserToSwipe = (req, res) => {
       const currentYear = currentDate.getFullYear();
       const minAge = currentYear - req.body.minage;
       const maxAge = currentYear - req.body.maxage;
+      console.log("ICI")
+      console.log(minAge)
+      console.log(req.body);
+      console.log(currentYear)
       let sql = '';
       let query;
       // Let configure user tags preference
-      console.log(req.body.prefTags);
+      // console.log(req.body.prefTags);
       let prefTags = '';
+      if (req.body.prefTags.length === 0)
+        prefTags += '1';
       for (let i = 0; i < req.body.prefTags.length; i++) {
         prefTags += 'id_tag = ' + req.body.prefTags[i].id_tag;
         if (i !== req.body.prefTags.length - 1) {
