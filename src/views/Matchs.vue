@@ -23,6 +23,9 @@
 
               <v-list-item-action>
                 <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
+                <v-btn icon>
+                  <v-icon color="grey darken-1">mdi-heart-broken-outline</v-icon>
+                </v-btn>
                 <v-btn icon @click.stop="select(item.index)">
                   <v-icon color="grey darken-1">mdi-comment-text-outline</v-icon>
                 </v-btn>
@@ -126,6 +129,9 @@ export default {
           try {
             const res = await axios.get(
               "http://localhost:8001/setting/" + id_user_matched, {} );
+              var myDate = new Date(res.data.user[0].last_connected);
+              myDate = myDate.getMonth() + myDate.getDate();
+              console.log(myDate)
             this.action = res.data.user[0].last_connected;
             this.name = res.data.user[0].firstname + " " + res.data.user[0].lastname;
             this.items.push({ divider: true, inset: true });
