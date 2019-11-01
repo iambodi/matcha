@@ -62,13 +62,14 @@ export default {
     },
     async getMatch() {
       try {
+        // let year = new Date().setFullYear;
         const res2 = await axios.post("http://localhost:8001/getUserToSwipe/", {
           minage: this.minAge,
           maxage: this.maxAge,
           prefTags: this.tags,
           interest: this.interest,
           id: this.id,
-          popularity: this.pop,
+          popularity: 100,
         })
         this.matchedUser = res2.data;
       } catch(error) {
