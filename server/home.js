@@ -63,10 +63,6 @@ exports.getUserToSwipe = (req, res) => {
       const currentYear = currentDate.getFullYear();
       const minAge = currentYear - req.body.minage;
       const maxAge = currentYear - req.body.maxage;
-      console.log("ICI")
-      console.log(minAge)
-      console.log(req.body);
-      console.log(currentYear)
       let sql = '';
       let query;
       // Let configure user tags preference
@@ -82,7 +78,7 @@ exports.getUserToSwipe = (req, res) => {
       }
       if (req.body.interest === 'Both') {
         // ADD DISTANCE CHECK
-        sql = 'SELECT user.id_user, firstname, bio, online, last_connected, position, YEAR(birthdate) AS year, popularity FROM user \
+        sql = 'SELECT user.id_user, firstname, lastname, username, bio, online, last_connected, position, YEAR(birthdate) AS year, popularity FROM user \
         WHERE NOT EXISTS(SELECT null FROM swipe WHERE user.id_user = swipe.id_user_matched AND swipe.id_user = ?) \
         AND NOT EXISTS(SELECT null FROM report WHERE user.id_user = report.id_user_blocked) \
         AND EXISTS(SELECT null FROM usertag WHERE ' + prefTags + ' AND usertag.id_user = user.id_user ) \
@@ -98,7 +94,7 @@ exports.getUserToSwipe = (req, res) => {
         ]);
         console.log(query);
       } else {
-        sql = 'SELECT user.id_user, firstname, bio, online, last_connected, position, YEAR(birthdate) AS year, popularity FROM user \
+        sql = 'SELECT user.id_user, firstname, lastname, username, bio, online, last_connected, position, YEAR(birthdate) AS year, popularity FROM user \
         WHERE NOT EXISTS(SELECT null FROM swipe WHERE user.id_user = swipe.id_user_matched AND swipe.id_user = ?) \
         AND NOT EXISTS(SELECT null FROM report WHERE user.id_user = report.id_user_blocked) \
         AND EXISTS(SELECT null FROM usertag WHERE ' + prefTags + ' AND usertag.id_user = user.id_user ) \
@@ -125,6 +121,8 @@ exports.getUserToSwipe = (req, res) => {
               message: '',
               id: response[0].id_user,
               firstname: response[0].firstname,
+              lastname: response[0].lastname,
+              username: response[0].username,
               bio: response[0].bio,
               position: JSON.parse(response[0].position),
               year: response[0].year,

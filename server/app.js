@@ -76,7 +76,6 @@ app.post('/swipe/', urlencodedParser, checkUserToken, home.swipe);
 
 app.post('/getAllUsers/', urlencodedParser, checkUserToken, home.getAllUsers);
 
-
 app.post('/saveMessage', urlencodedParser, checkUserToken, chat.saveMessage);
 
 app.post('/getUserOnline', urlencodedParser, checkUserToken, home.getUserOnline);
@@ -102,7 +101,6 @@ app.get('/removeUserTag/:id/:id_tag', urlencodedParser, checkUserToken, user.rem
 app.get('/removePrefTag/:id/:id_tag', urlencodedParser, checkUserToken, user.removePrefTag);
 
 app.get('/getProfilePhoto/:id', urlencodedParser, checkUserToken, user.getProfilePhoto);
-
 app.get('/randomUser', urlencodedParser, generator.randomUser);
 
 app.get('/getNotifications/:id', urlencodedParser, checkUserToken, notification.getNotifications);
