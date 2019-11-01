@@ -9,6 +9,8 @@
       :user="user"
       v-on:deleteUser="deleteUser"
       v-on:alertMsg="alertMsg"
+      :socket="socket"
+      :idUser="id"
     />
   </v-col>
 </template>
@@ -18,13 +20,16 @@ import SearchFilters from "../components/SearchFilters";
 import UserCard from "../components/UserCard";
 
 export default {
+  props: {
+    socket: Object,
+  },
   components: {
     SearchFilters,
     UserCard
   },
   data() {
     return {
-      id: localStorage.getItem("id"),
+      id: parseInt(localStorage.getItem("id")),
       users: [],
       gender: "",
       interests: "",

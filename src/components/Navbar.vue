@@ -7,9 +7,9 @@
                 <span :style="{ cursor: 'pointer'}" @click="redirect" class="cursos-pointer font-weight-light">MAT</span>
                 <span :style="{ cursor: 'pointer'}" @click="redirect">Cha</span>
             </v-toolbar-title>
-                <v-btn icon @click.stop="notif=true">
+                <v-btn icon @click.stop="seeNotif">
                     <v-icon>mdi-bell-outline</v-icon>
-                    <Notif v-model="notif" /></v-btn>
+                    <Notif v-model="notif" :notifs="notifs"/>{{notifs.length}}</v-btn>
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" app class="deep-orange lighten-1">
             <v-layout class="pb-5" align-center justify-space-between column fill-height>
@@ -59,10 +59,17 @@ export default {
             ],
         }
     },
+    props: {
+        notifs: Array,
+    },
     components: {
         Notif,
     },
     methods: {
+        seeNotif(){
+            this.notif = true;
+            this.$emit('lookNotifs')
+        },
         redirect () {
             window.location = 'http://localhost:8080';
         },

@@ -42,9 +42,11 @@
 
 <script>
 import Chats from "../components/Chats";
-import io from "socket.io-client";
 
 export default {
+  props: {
+    socket: Object,
+  },
   data() {
     return {
       msg: [],
@@ -60,7 +62,7 @@ export default {
       items: [{ header: "Your last interractions" }],
       matchs: [],
       selected: -1,
-      socket: io("localhost:3000"),
+      // socket: io("localhost:3000"),
       selectedId: -1,
     };
   },
@@ -88,8 +90,10 @@ export default {
         }
       },
       postMsg(id_match, obj) {
-          this.socket.emit('send message', obj)
-   //       this.addMsg(id_match, obj)
+        console.log(this.matchs[this.selected])
+          this.socket.emit('send message', {...obj, user:this.id})
+          this.socket.emit('send notif', {user: this.matchs[this.selected].id_user_matched, type:6})
+          axios.post("http://localhost:8001/addNotification", {id_user:this.matchs[this.selected].id_user_matched, id_user_:this.id, notif:6})
       },
       addMsg (id_match, obj){
           this.matchs[id_match].message.push(obj);

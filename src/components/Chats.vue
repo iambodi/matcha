@@ -46,16 +46,13 @@
 </template>
 
 <script>
-// import io from "socket.io-client";
 
 export default {
   data() {
     return {
-      //   show: false,
       text: "Hey!",
       marker: true,
       id: parseInt(localStorage.getItem("id")),
-    //   socket: io("localhost:5000"),
       message: ""
     };
   },

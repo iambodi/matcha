@@ -109,6 +109,8 @@ export default {
     }
   },
   props: {
+      idUser: Number,
+      socket: Object,
       user: Object,
   },
   mounted () {
@@ -126,15 +128,22 @@ export default {
           id_user_: user,
           like: 1,
         });
-        console.log(res)
-        if (res.data.match === true)
+        // console.log(res)
+        if (res.data.match === true) {
+          this.socket.emit('send notif', {user:user, type:5})
+          axios.post("http://localhost:8001/addNotification", {id_user:user, id_user_:this.id, notif:5})
           this.$emit('alertMsg', "success", "you matched !")
-        else
+        }
+        else {
+          this.socket.emit('send notif', {user:user, type:4})
+          axios.post("http://localhost:8001/addNotification", {id_user:user, id_user_:this.id, notif:4})
           this.$emit('alertMsg', "fail", "you didn't match !")
+        }
         // console.log(res)
         // console.log("i liked");
         // console.log(this.id, "wants to like ", user) // ca get le user id qu'on veut dislike
         this.$emit('deleteUser', user);
+
       },
       dislikeUser(user)
       {

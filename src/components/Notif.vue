@@ -1,21 +1,20 @@
 <template>
   <v-dialog v-model="show" max-width="400px">
-    <v-card left>
+    <template v-for="(notif, index) in notifs">
+    <v-card left v-bind:key="index">
       <v-card-title class="deep-orange lighten-1 white--text" primary-title>Notifications</v-card-title>
+      {{notif.firstname + " " + notif.lastname}} {{notif.notif===6 ? " Sent you a message" : notif.notif===5 ? " Matched with you !" : notif.notif===4 ? " liked you !" : notif.notif ===1 ? " Viewed your profile !" : " did sommething !"}}
       <v-card-text>
-        <div>
-          <p v-if="isConnected">We're connected to the server!</p>
-          <p>Message from server: "{{socketMessage}}"</p>
-          <button @click="pingServer()">Ping Server</button>
-        </div>
       </v-card-text>
     </v-card>
+    </template>
   </v-dialog>
 </template>
 
 <script>
 export default {
   props: {
+    notifs: Array,
     isConnected: false,
     socketMessage: "",
     value: Boolean
@@ -23,23 +22,23 @@ export default {
   mounted() {
     // this.connect();
   },
-  sockets: {
-    connect() {
-      // Fired when the socket connects.
-      this.isConnected = true;
-    },
-    notification() {
-      this.isConnected = true;
-    },
-    disconnect() {
-      this.isConnected = false;
-    },
+  // sockets: {
+    // connect() {
+    //   // Fired when the socket connects.
+    //   this.isConnected = true;
+    // },
+    // notification() {
+    //   this.isConnected = true;
+    // },
+    // disconnect() {
+    //   this.isConnected = false;
+    // },
 
-    // Fired when the server sends something on the "messageChannel" channel.
-    messageChannel(data) {
-      this.socketMessage = data;
-    }
-  },
+    // // Fired when the server sends something on the "messageChannel" channel.
+    // messageChannel(data) {
+    //   this.socketMessage = data;
+    // }
+  // },
 
   methods: {
     // receive (obj) {

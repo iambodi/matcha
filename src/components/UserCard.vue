@@ -1,10 +1,10 @@
 <template>
-  <v-card @click.stop="dialog=true" class="d-inline-block mx-auto">
+  <v-card @click.stop="clicked()" class="d-inline-block mx-auto">
           <v-dialog
       v-model="dialog"
       max-width="800"
     >
-      <ProfileCard :user="user" v-on:deleteUser="deleteUser" v-on:alertMsg="alertMsg"/>
+      <ProfileCard :socket="socket" :user="user" :idUser="idUser" v-on:deleteUser="deleteUser" v-on:alertMsg="alertMsg"/>
     </v-dialog>
 
     <v-container>
@@ -54,7 +54,9 @@ import ProfileCard from "./ProfileCard"
         ProfileCard,
       },
         props: {
+            socket: Object,
             user: Object,
+            idUser: Number,
         },
         data() {
             return {
@@ -66,6 +68,14 @@ import ProfileCard from "./ProfileCard"
           
         },
         methods: {
+          async clicked() {
+            // AWAIT faire la requete de si l'user nous like oupa et s'il a deja match
+            // et le rajouter dans this.user
+            // et afficher si l'user est onl;ine ou pas sur la grosse carte + derniere connection s'il est pas online
+            this.dialog = true;
+            this.socket.emit('send notif', {user:this.user.id_user, type:1})
+            axios.post("http://localhost:8001/addNotification", {id_user:this.user.id_user, id_user_:this.idUser, notif:1})
+          },
           deleteUser(user) {
             this.dialog = false;
             this.$emit("deleteUser", user)
