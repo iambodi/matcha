@@ -103,7 +103,7 @@ export default {
       },
       snackbar: false,
       resText : "",
-      gender: ["Male", "Female", "Non-binary"],
+      gender: ["Male", "Female"],
       date: new Date().toISOString().substr(0, 10),
       menu: false,
       modal: false,
