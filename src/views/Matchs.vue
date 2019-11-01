@@ -22,13 +22,13 @@
               </v-list-item-content>
 
               <v-list-item-action>
-                <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
+                <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
                 <v-btn @click.stop ="dislikeUser(item)" icon>
                   <v-icon color="grey darken-1">mdi-heart-broken-outline</v-icon>
                 </v-btn>
-                <!-- <v-btn icon @click.stop="select(item.index)">
+                <v-btn icon @click.stop="select(item.index)">
                   <v-icon color="grey darken-1">mdi-comment-text-outline</v-icon>
-                </v-btn> -->
+                </v-btn>
               </v-list-item-action>
             </v-list-item>
           </template>
