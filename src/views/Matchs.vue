@@ -59,7 +59,7 @@ export default {
       marker: true,
       id: localStorage.getItem("id"),
       avatar: "",
-      action: "",
+    //   action: "",
       name: "",
       subtitle: "",
       items: [{ header: "Your last interractions" }],
@@ -114,14 +114,11 @@ export default {
       },
       select(index)
       {
-        //   console.log(index)
           this.selected = index;
           this.msg = this.matchs[this.selected].message;
           this.selectedId = this.matchs[this.selected].id_match;
-       //   console.log(this.msg)
       },
     async getMatch() {
-        // console.log("MATCHS :", this.matchs)
       try {
         const res = await axios.get("http://localhost:8001/chat/" + this.id, {});
         this.matchs.push(...res.data.matches_list)
@@ -140,10 +137,12 @@ export default {
           try {
             const res = await axios.get(
               "http://localhost:8001/setting/" + id_user_matched, {} );
-              var myDate = new Date(res.data.user[0].last_connected);
-              myDate = myDate.getMonth() + myDate.getDate();
-              // console.log(myDate)
-            this.action = res.data.user[0].last_connected;
+
+            const myDate = new Date(res.data.user[0].last_connected);
+            const date = res.data.user[0].last_connected;
+            const month = (date.substring(5,10));
+            const hour = (date.substring(11,16));
+            this.action = month + " " + hour;
             this.name = res.data.user[0].firstname + " " + res.data.user[0].lastname;
             this.items.push({ divider: true, inset: true });
             try {
