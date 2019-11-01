@@ -1,5 +1,5 @@
 <template>
-  <v-col>
+  <v-col v-if="getPhoto === true">
     <v-row justify="center">
       <SearchFilters v-on:applyFilters="filterResult" v-on:applyOrder="sortResult"/>
     </v-row>
@@ -13,6 +13,11 @@
       :idUser="id"
     />
   </v-col>
+  <v-card v-else class="mx-auto"
+    max-width="360"
+    outlined>
+    <v-card-text>You need to add a picture of you to start to match</v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -38,15 +43,30 @@ export default {
       pop: "",
       displayedUsers: [],
       lat: 0.0,
-      long: 0.0
+      long: 0.0,
+      getPhoto: "",
     };
   },
   async created() {
     await this.getPrefs();
     await this.getAllUsers();
+    this.getUserPhoto();
     // this.displayedUsers = this.users;
   },
   methods: {
+    async getUserPhoto() {
+      try {
+        const res = await axios.get("http://localhost:8001/getUserPhotos/" + this.id, {})
+        console.log(res.data.photos);
+        if (res.data.photos.length === 0)
+        this.getPhoto = false;
+        else {
+          this.getPhoto = true;
+        }
+      } catch {
+          this.$emit("alertMsg", "fail", "Error, please retry");
+      }
+    },
     sortResult(params) {
       let order = params.order === 0 ? "asc" : "desc";
       let key = "";
