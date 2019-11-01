@@ -93,6 +93,7 @@ export default {
         console.log(this.matchs[this.selected])
           this.socket.emit('send message', {...obj, user:this.id})
           this.socket.emit('send notif', {user: this.matchs[this.selected].id_user_matched, type:6})
+          axios.post("http://localhost:8001/addNotification", {id_user:this.matchs[this.selected].id_user_matched, id_user_:this.id, notif:6})
       },
       addMsg (id_match, obj){
           this.matchs[id_match].message.push(obj);

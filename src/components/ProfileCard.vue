@@ -109,6 +109,7 @@ export default {
     }
   },
   props: {
+      idUser: Number,
       socket: Object,
       user: Object,
   },
@@ -130,10 +131,12 @@ export default {
         // console.log(res)
         if (res.data.match === true) {
           this.socket.emit('send notif', {user:user, type:5})
+          axios.post("http://localhost:8001/addNotification", {id_user:user, id_user_:this.id, notif:5})
           this.$emit('alertMsg', "success", "you matched !")
         }
         else {
           this.socket.emit('send notif', {user:user, type:4})
+          axios.post("http://localhost:8001/addNotification", {id_user:user, id_user_:this.id, notif:4})
           this.$emit('alertMsg', "fail", "you didn't match !")
         }
         // console.log(res)

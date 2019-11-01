@@ -4,7 +4,7 @@
       v-model="dialog"
       max-width="800"
     >
-      <ProfileCard :socket="socket" :user="user" v-on:deleteUser="deleteUser" v-on:alertMsg="alertMsg"/>
+      <ProfileCard :socket="socket" :user="user" :idUser="idUser" v-on:deleteUser="deleteUser" v-on:alertMsg="alertMsg"/>
     </v-dialog>
 
     <v-container>
@@ -56,6 +56,7 @@ import ProfileCard from "./ProfileCard"
         props: {
             socket: Object,
             user: Object,
+            idUser: Number,
         },
         data() {
             return {
@@ -73,6 +74,7 @@ import ProfileCard from "./ProfileCard"
             // et afficher si l'user est onl;ine ou pas sur la grosse carte + derniere connection s'il est pas online
             this.dialog = true;
             this.socket.emit('send notif', {user:this.user.id_user, type:1})
+            axios.post("http://localhost:8001/addNotification", {id_user:this.user.id_user, id_user_:this.idUser, notif:1})
           },
           deleteUser(user) {
             this.dialog = false;

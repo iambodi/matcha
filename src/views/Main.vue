@@ -3,7 +3,7 @@
     <Login v-on:loggingSuccess="loggedIn" v-on:alertMsg="fireAlert" />
   </v-container>
   <v-container v-else>
-    <Navbar v-on:loggingOutSuccess="loggedOut"/>
+    <Navbar :notifs="notifs" v-on:lookNotifs="cleanNotifs" v-on:loggingOutSuccess="loggedOut"/>
     <router-view v-on:alertMsg="fireAlert" :socket="socket"></router-view>
   </v-container>
 </template>
@@ -33,12 +33,14 @@ export default {
       ],
       selected: [],
       socket: io("localhost:3000"),
+      notifs: [],
     };
   },
   created () {
     document.addEventListener('beforeunload', this.loggedOut);
     this.socket.on("receive notif", (data) => {
-      console.log(data) // ici on recoit le type de notif et de qui
+      this.getNotifs(this.id)
+      // console.log(data) // ici on recoit le type de notif et de qui
     });
     // on login recieve notifs, on click on notif, delete notifs, on recieve notif, pull l'api
   },
@@ -93,6 +95,20 @@ export default {
       }
       let value = userId+"_user"
       this.socket.emit('join userroom', value)
+      this.getNotifs(userId);
+    },
+    async getNotifs(userId) {
+      const res = await axios.get("http://localhost:8001/getNotifications/" + userId, {})
+      this.notifs = res.data.notifications;
+      // if (this.notifs.length !== 0)
+      //   console.log("you have notifs")
+      // console.log(res)
+    },
+    cleanNotifs() {
+      for (let i = 0; i < this.notifs.length; i++) {
+        axios.get("http://localhost:8001/deleteNotifications/" + this.notifs[i].id_notif)
+      }
+      // this.notifs = [];
     },
     loggedOut()
     {

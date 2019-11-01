@@ -10,6 +10,7 @@
       v-on:deleteUser="deleteUser"
       v-on:alertMsg="alertMsg"
       :socket="socket"
+      :idUser="id"
     />
   </v-col>
 </template>
@@ -28,7 +29,7 @@ export default {
   },
   data() {
     return {
-      id: localStorage.getItem("id"),
+      id: parseInt(localStorage.getItem("id")),
       users: [],
       gender: "",
       interests: "",
