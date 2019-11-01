@@ -22,7 +22,7 @@
               </v-list-item-content>
 
               <v-list-item-action>
-                <!-- <v-list-item-action-text v-text="item.action"></v-list-item-action-text> -->
+                <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
                 <v-btn @click.stop ="dislikeUser(item)" icon>
                   <v-icon color="grey darken-1">mdi-heart-broken-outline</v-icon>
                 </v-btn>
@@ -137,7 +137,11 @@ export default {
           try {
             const res = await axios.get(
               "http://localhost:8001/setting/" + id_user_matched, {} );
-            // this.action = res.data.user[0].last_connected;
+            const myDate = new Date(res.data.user[0].last_connected);
+            const date = res.data.user[0].last_connected;
+            const month = (date.substring(5,10));
+            const hour = (date.substring(11,16));
+            this.action = month + " " + hour;
             this.name = res.data.user[0].firstname + " " + res.data.user[0].lastname;
             this.items.push({ divider: true, inset: true });
             try {
