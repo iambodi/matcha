@@ -1,7 +1,12 @@
 <template>
-  <v-container v-if="matchedUser !== null" fluid fill-height justify-center align-center>
+  <v-container v-if="matchedUser !== null && getPhoto" fluid fill-height justify-center align-center>
       <ProfileMatch :socket="this.socket" v-on:alertMsg="fireAlert" :user="this.matchedUser" :idUser="this.id"/>
   </v-container>
+    <v-card v-else class="mx-auto"
+    max-width="360"
+    outlined>
+    <v-card-text>You need to add a picture of you to start to match</v-card-text>
+  </v-card>
 </template>
 
 
@@ -19,6 +24,7 @@ export default {
       pop: 0,
       tags: [],
       matchedUser: null,
+      getPhoto: false,
     }
   },
   async mounted() {
@@ -38,6 +44,7 @@ export default {
         }
       }
     }
+    await this.getUserPhoto()
     // console.log(this.matchedUser)
   },
   components: {
@@ -47,6 +54,19 @@ export default {
     socket: Object,
   },
   methods: {
+    async getUserPhoto() {
+      try {
+        const res = await axios.get("http://localhost:8001/getUserPhotos/" + this.id, {})
+        // console.log(res.data.photos);
+        if (res.data.photos.length === 0)
+        this.getPhoto = false;
+        else {
+          this.getPhoto = true;
+        }
+      } catch {
+          this.$emit("alertMsg", "fail", "Error, please retry");
+      }
+    },
     async enterViewHome() {
     try {
      const res = await axios.get("http://localhost:8001/home/" + this.id, {})
@@ -62,13 +82,14 @@ export default {
     },
     async getMatch() {
       try {
+        // let year = new Date().setFullYear;
         const res2 = await axios.post("http://localhost:8001/getUserToSwipe/", {
           minage: this.minAge,
           maxage: this.maxAge,
           prefTags: this.tags,
           interest: this.interest,
           id: this.id,
-          popularity: this.pop,
+          popularity: 100,
         })
         this.matchedUser = res2.data;
       } catch(error) {
