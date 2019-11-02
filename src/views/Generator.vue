@@ -1,23 +1,6 @@
 <template>
-<v-card>
-      <v-col cols="12">
-        <v-subheader class="pl-0">Number of users to add</v-subheader>
-        <v-slider
-        min=1
-        max=500
-          v-model="userNumber"
-          thumb-label="always"
-        ></v-slider>
-        <v-col class="d-flex" cols="12" sm="6">
-        <v-select
-          :items="gender"
-          label="Select gender"
-          outlined
-          v-model="selectedGender"
-        ></v-select>
-      </v-col>
-      </v-col>
-      </v-card>
+  <v-btn @click.stop="submit">Populate databasee with 500 random users
+    </v-btn>
 </template>
 
 <script>
@@ -25,14 +8,17 @@
 export default {
     data () {
         return {
-            userNumber: 250,
-            gender:['Male', 'Female', 'Both'],
-            selectedGender: "Both",
-            firstNames: [],
         }
     },
     methods: {
-
+      async submit() {
+      try {
+        const res = await axios.get("http://localhost:8001/randomUser", {}); // ajout de 500 users
+        console.log(res);
+      } catch (error) {
+        this.$emit('alertMsg', "fail", "Error, please retry");
+      }
+      }
     }
 }
 </script>
