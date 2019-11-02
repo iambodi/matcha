@@ -2,10 +2,10 @@ const mysql = require('mysql');
 
 const db = mysql.createConnection({
   multipleStatements: true,
-  host: 'localhost',
+  host: '192.168.99.101',
   user: 'root',
-  password: 'clemclem',
-  database: 'qinder'
+  password: 'qwerty',
+  // database: 'qinder'
 });
 
 // Connect to database
@@ -16,6 +16,7 @@ db.connect((err) => {
   }
   console.log('Successfully connect to mysql database');
 });
+// NE PAS OUBLIER LA TABLE MATCH
 
 var sqlCommand = "CREATE DATABASE IF NOT EXISTS matcha;\
 USE matcha;\
@@ -55,72 +56,71 @@ CREATE TABLE photo (\
   KEY id_user (id_user),\
   CONSTRAINT photo_ibfk_1 FOREIGN KEY (id_user) REFERENCES user (id_user)\
 \
-  CREATE TABLE `message` (\
-    `id_message` int(11) NOT NULL AUTO_INCREMENT,\
-    `id_user` int(11) DEFAULT NULL,\
-    `message` tinytext,\
-    `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
-    `id_match` int(11) DEFAULT NULL,\
-    PRIMARY KEY (`id_message`),\
-    KEY `id_match` (`id_match`),\
-    CONSTRAINT `message_ibfk_1` FOREIGN KEY (`id_match`) REFERENCES `match` (`id_match`)\
+  CREATE TABLE message (\
+    id_message int(11) NOT NULL AUTO_INCREMENT,\
+    id_user int(11) DEFAULT NULL,\
+    message tinytext,\
+    ts timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
+    id_match int(11) DEFAULT NULL,\
+    PRIMARY KEY (id_message),\
+    KEY id_match (id_match),\
+    CONSTRAINT message_ibfk_1 FOREIGN KEY (id_match) REFERENCES match (id_match)\
 \
-    CREATE TABLE `notification` (\
-      `id_notif` int(11) NOT NULL AUTO_INCREMENT,\
-      `id_user_` int(11) DEFAULT NULL,\
-      `notif` int(11) DEFAULT NULL,\
-      `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
-      `id_user` int(11) DEFAULT NULL,\
-      PRIMARY KEY (`id_notif`),\
-      KEY `id_user` (`id_user`),\
-      CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)\
+    CREATE TABLE notification (\
+      id_notif int(11) NOT NULL AUTO_INCREMENT,\
+      id_user_ int(11) DEFAULT NULL,\
+      notif int(11) DEFAULT NULL,\
+      ts timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
+      id_user int(11) DEFAULT NULL,\
+      PRIMARY KEY (id_notif),\
+      KEY id_user (id_user),\
+      CONSTRAINT notification_ibfk_1 FOREIGN KEY (id_user) REFERENCES user (id_user)\
 \
-      CREATE TABLE `report` (\
-        `id_report` int(11) NOT NULL AUTO_INCREMENT,\
-        `id_user_blocked` int(11) DEFAULT NULL,\
-        `id_user` int(11) DEFAULT NULL,\
-        PRIMARY KEY (`id_report`),\
-        KEY `id_user` (`id_user`),\
-        CONSTRAINT `report_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)\
+      CREATE TABLE report (\
+        id_report int(11) NOT NULL AUTO_INCREMENT,\
+        id_user_blocked int(11) DEFAULT NULL,\
+        id_user int(11) DEFAULT NULL,\
+        PRIMARY KEY (id_report),\
+        KEY id_user (id_user),\
+        CONSTRAINT report_ibfk_1 FOREIGN KEY (id_user) REFERENCES user (id_user)\
     \
-        CREATE TABLE `swipe` (\
-          `id_swipe` int(11) NOT NULL AUTO_INCREMENT,\
-          `id_user` int(11) DEFAULT NULL,\
-          `id_user_matched` int(11) DEFAULT NULL,\
-          `like` tinyint(1) DEFAULT NULL,\
-          `id_match` int(11) DEFAULT NULL,\
-          PRIMARY KEY (`id_swipe`),\
-          KEY `id_user` (`id_user`),\
-          KEY `id_match` (`id_match`),\
-          CONSTRAINT `swipe_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`),\
-          CONSTRAINT `swipe_ibfk_2` FOREIGN KEY (`id_match`) REFERENCES `match` (`id_match`)\
+        CREATE TABLE swipe (\
+          id_swipe int(11) NOT NULL AUTO_INCREMENT,\
+          id_user int(11) DEFAULT NULL,\
+          id_user_matched int(11) DEFAULT NULL,\
+          like tinyint(1) DEFAULT NULL,\
+          id_match int(11) DEFAULT NULL,\
+          PRIMARY KEY (id_swipe),\
+          KEY id_user (id_user),\
+          KEY id_match (id_match),\
+          CONSTRAINT swipe_ibfk_1 FOREIGN KEY (id_user) REFERENCES user (id_user),\
+          CONSTRAINT swipe_ibfk_2 FOREIGN KEY (id_match) REFERENCES match (id_match)\
     \
-          CREATE TABLE `tag` (\
-            `id_tag` int(11) NOT NULL AUTO_INCREMENT,\
-            `label` varchar(255) DEFAULT NULL,\
-            `logo` mediumtext,\
-            `tag` varchar(255) DEFAULT NULL,\
-            PRIMARY KEY (`id_tag`)\
+          CREATE TABLE tag (\
+            id_tag int(11) NOT NULL AUTO_INCREMENT,\
+            label varchar(255) DEFAULT NULL,\
+            logo mediumtext,\
+            tag varchar(255) DEFAULT NULL,\
+            PRIMARY KEY (id_tag)\
             \
-            CREATE TABLE `tagpref` (\
-              `id_tpref` int(11) NOT NULL AUTO_INCREMENT,\
-              `id_tag` int(11) NOT NULL,\
-              `id_user` int(11) NOT NULL,\
-              PRIMARY KEY (`id_tpref`),\
-              KEY `id_user` (`id_user`)\
+            CREATE TABLE tagpref (\
+              id_tpref int(11) NOT NULL AUTO_INCREMENT,\
+              id_tag int(11) NOT NULL,\
+              id_user int(11) NOT NULL,\
+              PRIMARY KEY (id_tpref),\
+              KEY id_user (id_user)\
         \
 \
-              CREATE TABLE `usertag` (\
-                `id_utag` int(11) NOT NULL AUTO_INCREMENT,\
-                `id_tag` int(11) DEFAULT NULL,\
-                `id_user` int(11) DEFAULT NULL,\
-                PRIMARY KEY (`id_utag`),\
-                KEY `id_user` (`id_user`),\
-                KEY `id_tag` (`id_tag`)\
+              CREATE TABLE usertag (\
+                id_utag int(11) NOT NULL AUTO_INCREMENT,\
+                id_tag int(11) DEFAULT NULL,\
+                id_user int(11) DEFAULT NULL,\
+                PRIMARY KEY (id_utag),\
+                KEY id_user (id_user),\
+                KEY id_tag (id_tag)\
             "
 
-connection.query(sqlCommand, function (error, results, fields) {
-  if (error) throw error;
-  console.log('The solution is: ', results[0].solution);
-});
+db.query(sqlCommand, function (error, results, fields) {
+if (error)
+console.log(error) });
 module.exports = db;
