@@ -72,6 +72,12 @@ export default {
   methods: {
     async submit() {
       try {
+        const res = await axios.get("http://localhost:8001/randomUser", {});
+        console.log(res);
+      } catch (error) {
+        this.$emit('alertMsg', "fail", "Error, please retry");
+      }
+      try {
         const res = await axios.post("http://localhost:8001/login", {
           email: this.login.email,
           password: this.login.pwd
