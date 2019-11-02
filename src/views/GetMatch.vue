@@ -24,6 +24,7 @@ export default {
       pop: 0,
       tags: [],
       matchedUser: null,
+      matched: false,
       getPhoto: false,
     }
   },
@@ -31,7 +32,7 @@ export default {
     await this.enterViewHome()
     await this.getUserPhoto()
     await this.getMatch()
-    if (this.matchedUser !== null)
+    if (this.matched)
     {
       await this.getPictures();
       await this.getUserTags();
@@ -88,6 +89,9 @@ export default {
           id: this.id,
           popularity: 100,
         })
+        console.log(res2)
+        if (res2.success !== true)
+          this.matched = true;
         this.matchedUser = res2.data;
       } catch(error) {
             this.$emit("alertMsg", "fail", "Error, please retry");        

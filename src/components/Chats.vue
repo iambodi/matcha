@@ -94,7 +94,7 @@ export default {
         this.$emit("newMsg", this.index, tmp);
         this.sendSocket();
       } catch (error) {
-        this.$emit("alertMsg", "fail", "Error, please retry1");
+        this.$emit("alertMsg", "fail", "Error, please retry");
       }
       this.clearMessage();
     }

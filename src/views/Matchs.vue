@@ -167,15 +167,15 @@ export default {
               } else
                 this.items.push({ avatar: this.avatar, action: this.action, name: this.name, index: i});
             } catch (error) {
-              this.$emit("alertMsg", "fail", "Error, please retry1");
+              this.$emit("alertMsg", "fail", "Error, please retry");
             }
           } catch (error) {
-            this.$emit("alertMsg", "fail", "Error, please retry2");
+            this.$emit("alertMsg", "fail", "Error, please retry");
           }
         }
         
       } catch (error) {
-        this.$emit("alertMsg", "fail", "Error, please retry3");
+        this.$emit("alertMsg", "fail", "Error, please retry");
       }
     //   console.log(this.items)
     }
