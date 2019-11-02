@@ -95,7 +95,6 @@ export default {
         }
       },
       postMsg(id_match, obj) {
-        console.log(this.matchs[this.selected])
           this.socket.emit('send message', {...obj, user:this.id})
           this.socket.emit('send notif', {user: this.matchs[this.selected].id_user_matched, type:6})
           axios.post("http://localhost:8001/addNotification", {id_user:this.matchs[this.selected].id_user_matched, id_user_:this.id, notif:6})
@@ -136,7 +135,6 @@ export default {
               "http://localhost:8001/getProfilePhoto/" + id_user_matched, {});
             this.avatar = res.data.photo;
           } catch (error) {
-            console.log(error);
             this.$emit("alertMsg", "fail", "Error, please retry");
           }
           try {
@@ -169,17 +167,14 @@ export default {
               } else
                 this.items.push({ avatar: this.avatar, action: this.action, name: this.name, index: i});
             } catch (error) {
-              console.log(error);
               this.$emit("alertMsg", "fail", "Error, please retry1");
             }
           } catch (error) {
-            console.log(error);
             this.$emit("alertMsg", "fail", "Error, please retry2");
           }
         }
         
       } catch (error) {
-        console.log(error);
         this.$emit("alertMsg", "fail", "Error, please retry3");
       }
     //   console.log(this.items)

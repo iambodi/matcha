@@ -200,7 +200,7 @@ exports.addPrefTag = (req, res) => {
 };
 
 exports.getUserTags = (req, res) => {
-  if (!req.body) {
+  if (!req.params) {
     res.sendStatus(500);
   } else {
     if (res) {

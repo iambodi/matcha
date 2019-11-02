@@ -34,7 +34,7 @@ export default {
     this.getTags();
   },
   methods: {
-    check(tag) {
+    async check(tag) {
       if (this.selected.includes(tag)) {
         var index = this.selected.indexOf(tag);
         this.selected.splice(index, 1);
@@ -47,10 +47,10 @@ export default {
         );
       } else {
         this.selected.push(tag);
-        axios.post("http://localhost:8001/addUserTag/", {
+        const res = await axios.post("http://localhost:8001/addUserTag/", {
           id_user: this.id,
           id_tag: this.tags.indexOf(tag) + 1
-        }); // a voir si ca marche
+        });
       }
     },
     async getTags() {

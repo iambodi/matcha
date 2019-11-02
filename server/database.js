@@ -121,7 +121,26 @@ CREATE TABLE IF NOT EXISTS photo (\
                 PRIMARY KEY (id_utag),\
                 KEY id_user (id_user),\
                 KEY id_tag (id_tag)\
-);"
+);\
+INSERT INTO tag (id_tag, label, logo, tag)\
+                VALUES (1, 'Netflix', NULL, 'Netflix & Chill')\
+                ON DUPLICATE KEY UPDATE id_tag = id_tag;\
+INSERT INTO tag (id_tag, label, logo, tag)\
+    VALUES (2, 'Athletic', NULL, 'Athletic')\
+      ON DUPLICATE KEY UPDATE id_tag = id_tag;\
+INSERT INTO tag (id_tag, label, logo, tag)\
+      VALUES (3, 'Gastronomy', NULL, 'Gastronomy')\
+      ON DUPLICATE KEY UPDATE id_tag = id_tag;\
+INSERT INTO tag (id_tag, label, logo, tag)\
+      VALUES (4, 'Nature Lovers', NULL, 'Nature Lovers')\
+      ON DUPLICATE KEY UPDATE id_tag = id_tag;\
+INSERT INTO tag (id_tag, label, logo, tag)\
+      VALUES (5, 'Nightlife', NULL, 'Nightlife')\
+      ON DUPLICATE KEY UPDATE id_tag = id_tag;\
+INSERT INTO tag (id_tag, label, logo, tag)\
+      VALUES (6, 'Adventurer', NULL, 'Adventurer')\
+      ON DUPLICATE KEY UPDATE id_tag = id_tag;\
+      "
 db.query(sqlCommand, function (error, results, fields) {
 if (error)
 console.log(error) });

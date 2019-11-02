@@ -110,7 +110,6 @@ exports.getUserToSwipe = (req, res) => {
       }
       db.query(query, (err, response) => {
         if (err) {
-          console.log(err);
           res.json({ success: false, message: 'User not found' });
         } else {
           if (response[0]) {
@@ -122,6 +121,7 @@ exports.getUserToSwipe = (req, res) => {
               lastname: response[0].lastname,
               username: response[0].username,
               bio: response[0].bio,
+              photo: response[0].photo,
               position: JSON.parse(response[0].position),
               year: response[0].year,
               popularity: response[0].popularity,
@@ -173,7 +173,6 @@ exports.getTheHeavens = (req, res) => {
       }
       db.query(query, (err, response) => {
         if (err) {
-          console.log(err);
           res.json({ success: false, message: 'User not found' });
         } else {
           if (response[0]) {
@@ -337,7 +336,6 @@ exports.getAllUsers = (req, res) => {
         ]);
       db.query(query, (err, response) => {
         if (err) {
-          console.log(err);
           res.json({ success: false, message: 'No user found' });
         } else {
           if (response[0]) {

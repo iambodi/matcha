@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="matchedUser !== null && getPhoto" fluid fill-height justify-center align-center>
-      <ProfileMatch :socket="this.socket" v-on:alertMsg="fireAlert" :user="this.matchedUser" :idUser="this.id"/>
+      <ProfileMatch :key="this.matchedUser.id_user" :socket="this.socket" v-on:alertMsg="fireAlert" :user="this.matchedUser" :idUser="this.id"/>
   </v-container>
     <v-card v-else class="mx-auto"
     max-width="360"
@@ -29,6 +29,7 @@ export default {
   },
   async mounted() {
     await this.enterViewHome()
+    await this.getUserPhoto()
     await this.getMatch()
     if (this.matchedUser !== null)
     {
@@ -43,7 +44,7 @@ export default {
         }
       }
     }
-    await this.getUserPhoto()
+
   },
   components: {
     ProfileMatch,
@@ -94,8 +95,8 @@ export default {
     },
     async getPictures() {
       try {
-        const res3 = await axios.get("http://localhost:8001/getProfilePhoto/" + this.matchedUser.id, {})
-          this.matchedUser.photo = res3.data.photo;
+        const res3 = await axios.get("http://localhost:8001/getUserPhotos/" + this.matchedUser.id, {})
+          this.matchedUser.photo = res3.data.photos[0].photo;
       } catch (error) {
             this.$emit("alertMsg", "fail", "Error, please retry");
         
@@ -111,6 +112,7 @@ export default {
       }
     },
     async getNewUser() {
+    this.matchedUser = null;
     await this.getMatch()
     if (this.matchedUser !== null)
     {

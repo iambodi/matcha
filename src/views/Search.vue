@@ -3,15 +3,18 @@
     <v-row justify="center">
       <SearchFilters v-on:applyFilters="filterResult" v-on:applyOrder="sortResult"/>
     </v-row>
+    <div id="toto">
+    </div>
     <UserCard
-      v-for="(user, i) in displayedUsers"
-      :key="i"
-      :user="user"
+      v-for="(user) in displayedUsers"
+      v-bind:key="user.id_user"
+      v-bind:user="user"
       v-on:deleteUser="deleteUser"
       v-on:alertMsg="alertMsg"
       :socket="socket"
-      :idUser="id"
+      v-bind:idUser="id"
     />
+
   </v-col>
   <v-card v-else class="mx-auto"
     max-width="360"
@@ -45,6 +48,7 @@ export default {
       lat: 0.0,
       long: 0.0,
       getPhoto: "",
+      params: {},
     };
   },
   async created() {
@@ -96,6 +100,7 @@ export default {
       };
     },
     filterResult(params) {
+      this.params = params;
       this.displayedUsers = [];
       for (let i = 0; i < this.users.length; i++) {
         if (
@@ -184,16 +189,20 @@ export default {
       for (let i = 0; i < this.users.length; i++) {
         if (this.users[i].id_user === user) {
           this.users.splice(i, 1);
+          break;
         }
       }
-      this.displayedUsers = this.displayedUsers.filter(function(value, index, arr, user){
-        return value.id_user !== user;
-      })
+ //     this.displayedUsers = this.displayedUsers.filter(function(value, index, arr, user){
+   //     return value.id_user !== user;
+     // })
       for (let i = 0; i < this.displayedUsers.length; i++) {
         if (this.displayedUsers[i].id_user !== user) {
            this.displayedUsers.splice(i, 1);
+           break;
          }
       }
+      this.filterResult(this.params);
+      this.$forceUpdate();
     },
     calculateDist() {
       for (let i = 0; i < this.users.length; i++) {

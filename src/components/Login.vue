@@ -44,7 +44,7 @@ export default {
     return {
       // logged: localStorage.getItem('logged'),
       register: false,
-      id: localStorage.getItem('id'),
+      id: parseInt(localStorage.getItem('id')),
       ResPwd: false,
       login: {
         email: "",
@@ -83,7 +83,7 @@ export default {
           this.$emit('loggingSuccess', res.data.user_id);
           this.$emit('alertMsg', "success", res.data.message);
           axios.post("http://localhost:8001/getUserOnline", {
-          userId: this.id,
+          userId: res.data.user_id,
           online: 1,
           });
         }

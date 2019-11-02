@@ -12,6 +12,7 @@
           height="300"
           width="300"
           :src="user.photo"
+          :key="user.id_user"
         >
               <div v-if="user.online===1" class="overline mb-0"><v-icon color="green">mdi-access-point</v-icon></div>
         </v-img>
