@@ -89,7 +89,6 @@ export default {
         fileReader.readAsDataURL(files[0]);
         this.imageUrl = files[0];
         this.$emit('alertMsg', "success", "Successfuly uploaded picture !")
-      //  console.log("SUCCESS");
       }
     },
     async addPhoto(photo) {

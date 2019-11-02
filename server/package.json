@@ -4,7 +4,7 @@
   "description": "Dating app",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node generator.js | nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "clement foltran, iscia ambayrac",

@@ -16,7 +16,6 @@ db.connect((err) => {
   }
   console.log('Successfully connect to mysql database');
 });
-// NE PAS OUBLIER LA TABLE MATCH
 
 var sqlCommand = "CREATE DATABASE IF NOT EXISTS matcha;\
 USE matcha;\

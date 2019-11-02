@@ -29,7 +29,6 @@ export default {
   },
   async mounted() {
     await this.enterViewHome()
-    // console.log(this.id, this.maxAge, this.minAge, this.interest, this.tags)
     await this.getMatch()
     if (this.matchedUser !== null)
     {
@@ -45,7 +44,6 @@ export default {
       }
     }
     await this.getUserPhoto()
-    // console.log(this.matchedUser)
   },
   components: {
     ProfileMatch,
@@ -57,7 +55,6 @@ export default {
     async getUserPhoto() {
       try {
         const res = await axios.get("http://localhost:8001/getUserPhotos/" + this.id, {})
-        // console.log(res.data.photos);
         if (res.data.photos.length === 0)
         this.getPhoto = false;
         else {
@@ -70,14 +67,13 @@ export default {
     async enterViewHome() {
     try {
      const res = await axios.get("http://localhost:8001/home/" + this.id, {})
-      // console.log(res);
       let user = res.data;
       this.maxAge = user.maxage;
       this.minAge = user.minage;
       this.interest = user.interest;
       this.tags = user.prefTags;
       } catch(error) {
-      console.log(error);
+            this.$emit("alertMsg", "fail", "Error, please retry");
       }
     },
     async getMatch() {
@@ -93,7 +89,7 @@ export default {
         })
         this.matchedUser = res2.data;
       } catch(error) {
-        console.log(error);
+            this.$emit("alertMsg", "fail", "Error, please retry");        
       }
     },
     async getPictures() {
@@ -101,7 +97,8 @@ export default {
         const res3 = await axios.get("http://localhost:8001/getProfilePhoto/" + this.matchedUser.id, {})
           this.matchedUser.photo = res3.data.photo;
       } catch (error) {
-        consolee.log(error);
+            this.$emit("alertMsg", "fail", "Error, please retry");
+        
       }
     },
     async getUserTags() {
@@ -109,7 +106,8 @@ export default {
         const res4 = await axios.get("http://localhost:8001/getUserTags/" + this.matchedUser.id, {})
         this.matchedUser.tags = res4.data.userTags;
       } catch(error) {
-        console.log(error);
+            this.$emit("alertMsg", "fail", "Error, please retry");
+        
       }
     },
     async getNewUser() {

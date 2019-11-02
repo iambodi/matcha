@@ -17,11 +17,9 @@ io.sockets.on('connection', function (socket) {
     roomId = room;
   });
   socket.on('send message', (obj) => {
-    // console.log(obj)
     io.to(obj.id_match).emit('receive message', obj);
   });
   socket.on('send notif', (obj) => {
-    console.log(obj)
     io.to(obj.user + "_user").emit('receive notif', obj)
   });
   socket.on('join userroom', (roomValue) => {
@@ -99,7 +97,6 @@ exports.saveMessage = (req, res) => {
         ]);
       db.query(query, (err, response) => {
         if (err) {
-          console.log(err);
           res.json({
             success: false,
             message: 'Failed to save this message',

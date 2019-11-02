@@ -8,13 +8,12 @@ http3.listen(5000, function() {
 });
 
 io.sockets.on('connection', function(socket) {
-    console.log('Made socket connection', socket.id);
-    socket.on('disconnect', function(socket) {
-      console.log("socket disconnected ", socket)
-    })
+    // console.log('Made socket connection', socket.id);
+    // socket.on('disconnect', function(socket) {
+    //   console.log("socket disconnected ", socket)
+    // })
     socket.on('notification', (obj) => {
         socket.emit('MESSAGE', obj)
-        console.log(obj);
     });
 });
 

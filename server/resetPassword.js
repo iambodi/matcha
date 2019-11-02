@@ -50,7 +50,6 @@ exports.checkKey = (req, res) => {
     }
     else {
       if (res) {
-        console.log('YEAH');
         const sql = "UPDATE user SET hash = ? WHERE email = ?";
         const hash = passwordHash.generate(req.body.password);
         const query = db.format(sql, [hash, req.body.email]);

@@ -50,7 +50,6 @@
             try {
               const res = await axios.get("http://localhost:8001/getPreferenceTags/" + this.id, {});
               if (res.data && res.data.prefTags && res.data.prefTags.length > 0) {
-             //     console.log(res.data.prefTags);
                     for (var i = 0; i < res.data.prefTags.length; i++) {
                       this.selected.push(this.tags[(res.data.prefTags[i].id_tag - 1)]);
                       this.selectedNumber.push(res.data.prefTags[i].id_tag - 1);

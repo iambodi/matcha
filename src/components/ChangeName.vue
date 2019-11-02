@@ -51,7 +51,6 @@ export default {
               newFirstName: this.firstname,
               newLastName: this.lastname
             });
-            console.log(res);
             if (res.data.message === "firstname" || res.data.message === "lastname") {      
               this.$emit("alertMsg", "fail", " Firstname and lastname must contain between 2 and 20 characters. [-] and [ ] are accepted");
             }

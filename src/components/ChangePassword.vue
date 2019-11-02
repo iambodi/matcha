@@ -92,7 +92,6 @@
                             if (res.data.message === 'success') {
                               this.$emit('alertMsg', "success", "Password successfully updated")
                             }
-                          //  console.log(res.data);
                         } catch (error) {
                           this.$emit('alertMsg', "fail", "Error, please retry")
                         }

@@ -83,7 +83,6 @@ export default {
       this.text = "";
     },
     async sendMessage() {
-      // console.log("sendmsg:", this.msg);
       try {
 
         const res = await axios.post("http://localhost:8001/saveMessage", {

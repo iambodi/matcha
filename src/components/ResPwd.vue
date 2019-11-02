@@ -64,7 +64,6 @@ export default {
             this.resText = 'Check your mail to reset your password';          
         }
         else {
-          console.log(res.data.message);
           this.resText = 'Please retry';
         }
       } catch (error) {

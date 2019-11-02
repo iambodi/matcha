@@ -122,7 +122,6 @@ export default {
   },
   mounted () {
       this.lastSeen = this.user.last_connected.split("T")[0];
-      console.log(this.user)
       if (this.user.tags) {
       for (let i = 0; i < this.user.tags.length; i++) {
           this.selected.push(this.tags.indexOf(this.user.tags[i]))
@@ -137,7 +136,6 @@ export default {
           id_user_: user,
           like: 1,
         });
-        // console.log(res)
         if (res.data.match === true) {
           this.socket.emit('send notif', {user:user, type:5})
           axios.post("http://localhost:8001/addNotification", {id_user:user, id_user_:this.id, notif:5})
@@ -148,9 +146,6 @@ export default {
           axios.post("http://localhost:8001/addNotification", {id_user:user, id_user_:this.id, notif:4})
           this.$emit('alertMsg', "fail", "you didn't match !")
         }
-        // console.log(res)
-        // console.log("i liked");
-        // console.log(this.id, "wants to like ", user) // ca get le user id qu'on veut dislike
         this.$emit('deleteUser', user);
 
       },
@@ -161,7 +156,6 @@ export default {
           id_user_: user,
           like: 0
         });
-        // console.log(this.id, "wants to dislike ", user)
         this.$emit('deleteUser', user);
         this.$emit('alertMsg', "success", "Succesfully disliked user !")
       },
@@ -171,7 +165,6 @@ export default {
           id_user_: user,
           id_user: this.id,
         });
-        // console.log(this.id, "wants to report ", user)
         this.$emit('deleteUser', user);
         this.$emit('alertMsg', "success", "succesflly reported user !")
       }

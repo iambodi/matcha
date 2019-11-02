@@ -60,7 +60,6 @@ exports.reportUserNotMatched = (req, res) => {
       query = db.format(sql, [req.body.id_user_, req.body.id_user]);
       db.query(query, (err) => {
         if (err) {
-          console.log(err);
           res.json({ success: false, message: 'Network error' });
         } else {
           res.json({ success: true, message: '' });
@@ -372,10 +371,18 @@ exports.login = (req, res) => {
             success: true,
           });
         } else {
+          if (confirm === 0) {
+            res.json({
+              message: 'You need to confirm first !',
+              success: false,
+            })
+            }
+          else {
           res.json({
             message: 'Wrong password',
             success: false,
           });
+        }
         }
       } else {
         res.json({
@@ -446,8 +453,6 @@ exports.register = (req, res) => {
         if (err) {
           const ret = err.sqlMessage;
           if (ret.search('username') !== -1) {
-            console.log(err.sqlMessage);
-            console.log('YEAH');
             res.json({
               message: 'usernameTaken',
               success: false,

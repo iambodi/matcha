@@ -25,11 +25,9 @@ export default {
       this.snackbar = true;
       this.alertmessage = message;
       if (state === "success"){
-     //   console.log("Success "+ message);
         this.fail = false;
       }
       else{
-       // console.log("fail " + message);
         this.fail = true;
       }
     },

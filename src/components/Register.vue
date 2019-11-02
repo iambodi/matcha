@@ -146,9 +146,8 @@ export default {
           if (error === "success"){
             this.resText = "Check your mailbox to confirm your account";
           }
-          console.log(res);
        } catch (error) {
-         console.log(error);
+         this.$emit('alertMsg', "fail", "Error, please retry");
        }
     },
   },

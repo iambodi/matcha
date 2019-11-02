@@ -14,7 +14,6 @@ export default {
       async submit() {
       try {
         const res = await axios.get("http://localhost:8001/randomUser", {}); // ajout de 500 users
-        console.log(res);
       } catch (error) {
         this.$emit('alertMsg', "fail", "Error, please retry");
       }

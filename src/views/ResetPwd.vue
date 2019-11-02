@@ -78,7 +78,6 @@ export default {
       let params = new URLSearchParams(url.search.slice(1));
       const email = params.get("email");
       const key = params.get("key");
-      console.log(window.location.href);
       if (params.has("email") === true && params.has("key")) {
         this.email = email;
         this.key = key;
@@ -92,9 +91,6 @@ export default {
         const res = await axios.post(
           "http://localhost:8001/checkKey/" + this.email
         );
-        // console.log(res.data);
-        // console.log(res.data.key);
-        // console.log(this.key);
         if (res.data.key === this.key) {
           try {
             const ret = await axios.post(
@@ -105,19 +101,15 @@ export default {
                 confirmPwd: this.confirmpwd
               }
             );
-            console.log(res.data);
             this.$emit('alertMsg', "success", "Succesfuly changed your password !")
-            // this.resText = 'Successfuly changed your password';
           } catch (error) {
             this.$emit('alertMsg', "fail", "Failed to change your password, please retry the processus");
           }
         } else {
             this.$emit('alertMsg', "fail", "Wrong link or token");
-          // this.resText = 'Wrong link or token';
         }
       } catch (error) {
         this.$emit('alertMsg', "fail", "Nothing here");
-        // this.resText = 'Nothing here';
       }
     }
   }

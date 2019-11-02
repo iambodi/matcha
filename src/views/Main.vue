@@ -40,9 +40,9 @@ export default {
     document.addEventListener('beforeunload', this.loggedOut);
     this.socket.on("receive notif", (data) => {
       this.getNotifs(this.id)
-      // console.log(data) // ici on recoit le type de notif et de qui
     });
-    // on login recieve notifs, on click on notif, delete notifs, on recieve notif, pull l'api
+    this.logged = localStorage.getItem('logged');
+    this.id = localStorage.getItem('id');
   },
   mounted () {
   },
@@ -50,7 +50,6 @@ export default {
     Register,
     Login,
     Navbar
-    //Notifs
   },
   methods: {
     getGeolocFromIP(userId) {
@@ -68,10 +67,6 @@ export default {
               longitude: jsonres.lon,
             })
           }
-          // else {
-          //   console.log()
-          //   this.$emit("alertMsg", 'fail', "couldn't join the tracking api") // jarrive pas a lancer ca
-          // }
         }
         invocation.send();
       }
@@ -100,15 +95,11 @@ export default {
     async getNotifs(userId) {
       const res = await axios.get("http://localhost:8001/getNotifications/" + userId, {})
       this.notifs = res.data.notifications;
-      // if (this.notifs.length !== 0)
-      //   console.log("you have notifs")
-      // console.log(res)
     },
     cleanNotifs() {
       for (let i = 0; i < this.notifs.length; i++) {
         axios.get("http://localhost:8001/deleteNotifications/" + this.notifs[i].id_notif)
       }
-      // this.notifs = [];
     },
     loggedOut()
     {
@@ -120,7 +111,10 @@ export default {
         userId: this.id,
       });
       this.id = -1;
-      this.logged = false; // penser a faire la requete qui delog et enregistre la derniere heure de connection
+      this.logged = false;
+      localStorage.setItem('logged', false);
+      localStorage.setItem('token', "");
+      localStorage.setItem('id', -1);  
     },
     fireAlert(state, message) {
       this.$emit("alertMsg", state, message);

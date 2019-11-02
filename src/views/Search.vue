@@ -57,7 +57,6 @@ export default {
     async getUserPhoto() {
       try {
         const res = await axios.get("http://localhost:8001/getUserPhotos/" + this.id, {})
-        console.log(res.data.photos);
         if (res.data.photos.length === 0)
         this.getPhoto = false;
         else {
@@ -98,7 +97,6 @@ export default {
     },
     filterResult(params) {
       this.displayedUsers = [];
-      //console.log(params)
       for (let i = 0; i < this.users.length; i++) {
         if (
           params.interests === "Both" ||
@@ -128,7 +126,6 @@ export default {
                       this.displayedUsers.push(this.users[i]);
                 }
       }
-      console.log(this.displayedUsers)
     },
     fireAlert(state, message) {
       this.$emit("alertMsg", state, message);
