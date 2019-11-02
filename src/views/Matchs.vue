@@ -6,7 +6,7 @@
           <v-toolbar-title>Inbox</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <v-list three-line>
+        <v-list v-if="working" three-line>
           <template v-for="(item, index) in items">
             <v-subheader v-if="item.header" :key="item.header" v-text="item.header"></v-subheader>
             <v-divider v-else-if="item.divider" :key="index" :inset="item.inset"></v-divider>
@@ -67,10 +67,12 @@ export default {
       selected: -1,
       // socket: io("localhost:3000"),
       selectedId: -1,
+      working: false,
     };
   },
   async created() {
     await this.getMatch();
+    if (this.matchs.length !== 0) {
     this.joinRooms();
     this.socket.on("receive message", data => {
     //   this.msg = [...this.text, data];
@@ -82,6 +84,7 @@ export default {
             this.matchs[i].message.push(data)
         }
     });
+    }
   },
   components: {
     Chats
@@ -122,6 +125,9 @@ export default {
       try {
         const res = await axios.get("http://localhost:8001/chat/" + this.id, {});
         this.matchs.push(...res.data.matches_list)
+        if (this.matchs.length == 0) {
+          return ;
+        }
         for (let i = 0; i < res.data.matches_list.length; i++) {
           const id_user_matched = res.data.matches_list[i].id_user_matched;
           const id_match = res.data.matches_list[i].id_match;
