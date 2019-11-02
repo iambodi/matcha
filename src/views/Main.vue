@@ -41,7 +41,7 @@ export default {
     this.socket.on("receive notif", (data) => {
       this.getNotifs(this.id)
     });
-    this.logged = localStorage.getItem('logged');
+    this.logged = localStorage.getItem('logged') === "false" ? false : true;
     this.id = localStorage.getItem('id');
   },
   mounted () {
@@ -73,7 +73,7 @@ export default {
     },
     loggedIn(userId) {
       this.id = userId;
-      this.logged = true;       // IF USER DOESNT HAVE POSITION LETS DO THIS
+      this.logged = true;
       if (!(navigator.geolocation)){
         this.getGeolocFromIP(userID);       
       }

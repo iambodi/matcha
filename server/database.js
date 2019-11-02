@@ -142,6 +142,7 @@ INSERT INTO tag (id_tag, label, logo, tag)\
       ON DUPLICATE KEY UPDATE id_tag = id_tag;\
       "
 db.query(sqlCommand, function (error, results, fields) {
-if (error)
-console.log(error) });
+  if (error)
+    console.log(error)
+});
 module.exports = db;
