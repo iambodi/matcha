@@ -6,7 +6,7 @@
           <v-toolbar-title>Inbox</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <v-list v-if="working" three-line>
+        <v-list three-line>
           <template v-for="(item, index) in items">
             <v-subheader v-if="item.header" :key="item.header" v-text="item.header"></v-subheader>
             <v-divider v-else-if="item.divider" :key="index" :inset="item.inset"></v-divider>
@@ -67,7 +67,6 @@ export default {
       selected: -1,
       // socket: io("localhost:3000"),
       selectedId: -1,
-      working: false,
     };
   },
   async created() {

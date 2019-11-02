@@ -9,6 +9,11 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/generator',
+      name: 'generator',
+      component: () => import('./views/Generator')
+    },
+    {
       path: '/activate',
       name: 'activate',
       component: () => import('./views/Activate')
