@@ -37,6 +37,8 @@ let  test = () => {
             let test2 = test.split(':')[1];
             let index = parseInt(test2) + 1;
             // console.log(index);
+            if (isNaN(index))
+              index = 0;
             s(index)
           }
       })
