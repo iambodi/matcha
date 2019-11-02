@@ -307,7 +307,7 @@ exports.getProfilePhoto = (req, res) => {
           res.json({
             success: true,
             message: 'Upload photo',
-            photo: response[0].photo,
+            photo: response.photo,
           });
         }
       });
