@@ -118,6 +118,11 @@ CREATE TABLE photo (\
                 PRIMARY KEY (id_utag),\
                 KEY id_user (id_user),\
                 KEY id_tag (id_tag)\
+\
+                CREATE TABLE match (\
+                  id_match int(11) NOT NULL AUTO_INCREMENT,\
+                  started timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
+                  PRIMARY KEY (id_match)\
             "
 
 db.query(sqlCommand, function (error, results, fields) {
