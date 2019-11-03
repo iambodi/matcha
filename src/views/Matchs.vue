@@ -100,9 +100,8 @@ export default {
           axios.post("http://localhost:8001/addNotification", {id_user:this.matchs[this.selected].id_user_matched, id_user_:this.id, notif:6})
       },
       async dislikeUser(item) {
-        // console.log(this.matchs[item.index])
         axios.get("http://localhost:8001/removeMatch/" + this.matchs[item.index].id_match, {})
-        this.matchs.splice(this.index, 1);
+        this.matchs.splice(item.index, 1);
         for (var i = 0; i < this.items.length; i++) {
           if (this.items[i].index === item.index)
             break;

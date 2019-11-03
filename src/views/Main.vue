@@ -41,7 +41,7 @@ export default {
     this.socket.on("receive notif", (data) => {
       this.getNotifs(this.id)
     });
-    this.logged = localStorage.getItem('logged') === "false" ? false : true;
+    this.logged = localStorage.getItem('logged') === "true" ? true : false;
     this.id = localStorage.getItem('id');
   },
   mounted () {

@@ -100,7 +100,7 @@ export default {
       outlined: false,
       elevation: undefined,
       raised: false,
-      tags: ['Netflix & chill', 'Adventurer', 'Athletic', 'Gastronomy', 'Nature lovers', 'Nightlife', 'Romantic', 'Gamer'],
+      tags: ['Netflix & chill', 'Adventurer', 'Athletic', 'Gastronomy', 'Nature lovers', 'Nightlife'],
       selected : [],
     }
   },

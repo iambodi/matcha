@@ -111,7 +111,7 @@ export default {
       elevation: undefined,
       lastSeen: "hello",
       raised: false,
-      tags: ['Netflix & chill', 'Adventurer', 'Athletic', 'Gastronomy', 'Nature lovers', 'Nightlife', 'Romantic', 'Gamer'],
+      tags: ['Netflix & chill', 'Adventurer', 'Athletic', 'Gastronomy', 'Nature lovers', 'Nightlife'],
       selected : [3],
     }
   },
