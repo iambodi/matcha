@@ -128,7 +128,6 @@ export default {
         for (let i = 0; i < res.data.matches_list.length; i++) {
           const id_user_matched = res.data.matches_list[i].id_user_matched;
           const id_match = res.data.matches_list[i].id_match;
-          //   console.log(res.data.matches_list[i].id_match);s
           try {
             const res = await axios.get(
               "http://localhost:8001/getProfilePhoto/" + id_user_matched, {});
@@ -151,13 +150,9 @@ export default {
               const res = await axios.get(
                 "http://localhost:8001/loadConversation/" + id_match, {} );
                 this.matchs[i].message = res.data.messageArray;
-              //  this.msg = this.matchs[0].message;
-                // console.log(this.msg)
               if (res.data.messageArray.length > 0) {
                 let ii = 0;
-                //   console.log(res.data);
                 while (ii < res.data.messageArray.length) {
-                //   console.log(res.data.messageArray[i].message);
                   ii++;
                 }
                 if (ii !== 0) {
@@ -176,7 +171,6 @@ export default {
       } catch (error) {
         this.$emit("alertMsg", "fail", "Error, please retry");
       }
-    //   console.log(this.items)
     }
   }
 };

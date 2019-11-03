@@ -89,7 +89,6 @@ export default {
           id: this.id,
           popularity: 100,
         })
-        console.log(res2)
         if (res2.success !== true)
           this.matched = true;
         this.matchedUser = res2.data;

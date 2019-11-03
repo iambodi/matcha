@@ -99,35 +99,20 @@ export default {
         return order == "desc" ? comparison * -1 : comparison;
       };
     },
+    checker(arr, target) {
+        return arr.every(i => target.includes(i));
+    },
     filterResult(params) {
       this.params = params;
       this.displayedUsers = [];
       for (let i = 0; i < this.users.length; i++) {
-        if (
-          params.interests === "Both" ||
-          params.interests === this.users[i].gender
-        )
-          if (
-            params.interestsAttirance === "Whatever" ||
-            params.interestsAttirance === this.users[i].interest
-          )
-            if (
-              this.users[i].age >= params.minage &&
-              this.users[i].age <= params.maxage
-            )
+        if (params.interests === "Both" || params.interests === this.users[i].gender)
+          if (params.interestsAttirance === "Whatever" || params.interestsAttirance === this.users[i].interest)
+            if (this.users[i].age >= params.minage && this.users[i].age <= params.maxage)
               if (this.users[i].popularity >= params.pop)
                 if (this.users[i].dist <= params.distance) {
-                  let checker = (arr, target) =>
-                    target.every(v => arr.includes(v));
-                  if (
-                    params.tags.length === 0 ||
-                    checker(this.users[i].tags, params.tags)
-                  )
-                    if (
-                      params.onlyShowOnline === false ||
-                      (params.onlyShowOnline === true &&
-                        this.users[i].online === 1)
-                    )
+                  if (params.tags.length === 0 || this.checker(this.users[i].tags, params.tags))
+                    if (params.onlyShowOnline === false || (params.onlyShowOnline === true && this.users[i].online === 1))
                       this.displayedUsers.push(this.users[i]);
                 }
       }
